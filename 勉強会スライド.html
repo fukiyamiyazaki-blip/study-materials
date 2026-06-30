@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI勉強会 - アプリを作ってみよう｜富喜屋</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Hiragino Sans', 'Meiryo', sans-serif; background: #FFF8F0; color: #2D2D2D; }
+
+  .slide {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    padding: 50px 80px 70px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+  .slide.active { display: flex; }
+
+  /* ロゴ共通 */
+  .logo {
+    position: fixed;
+    top: 18px;
+    left: 30px;
+    z-index: 200;
+    height: 44px;
+  }
+
+  /* 色テーマ */
+  .slide-title    { background: linear-gradient(135deg, #C0460A, #E07B39); color: #fff; }
+  .slide-light    { background: #FFF8F0; color: #2D2D2D; }
+  .slide-warm     { background: #FFF1E0; color: #2D2D2D; }
+  .slide-green    { background: #F0F5EC; color: #2D2D2D; }
+  .slide-orange   { background: #FEF0E6; color: #2D2D2D; }
+  .slide-summary  { background: linear-gradient(135deg, #C0460A, #E07B39); color: #fff; }
+
+  /* 見出し */
+  h1 { font-size: 2.8em; font-weight: bold; line-height: 1.3; margin-bottom: 16px; }
+  h2 {
+    font-size: 1.75em;
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #C0460A;
+    border-bottom: 3px solid #E07B39;
+    padding-bottom: 10px;
+    width: 100%;
+    text-align: left;
+  }
+  .slide-title h1,
+  .slide-summary h1,
+  .slide-summary h2,
+  .slide-title h2 { color: #fff; border-color: rgba(255,255,255,0.4); }
+  h3 { font-size: 1.1em; font-weight: bold; margin-bottom: 6px; }
+  p  { font-size: 1em; line-height: 1.8; color: #555; }
+
+  .subtitle  { font-size: 1.3em; color: rgba(255,255,255,0.9); margin-bottom: 8px; }
+  .date-info { font-size: 0.95em; color: rgba(255,255,255,0.7); margin-top: 16px; }
+
+  /* フロー */
+  .flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 24px 0;
+    flex-wrap: wrap;
+  }
+  .flow-box {
+    background: #fff;
+    border: 2px solid #E07B39;
+    border-radius: 14px;
+    padding: 20px 28px;
+    text-align: center;
+    min-width: 170px;
+    box-shadow: 0 2px 8px rgba(224,123,57,0.15);
+  }
+  .flow-box .icon { font-size: 2.2em; margin-bottom: 6px; }
+  .flow-box .name { font-size: 1em; font-weight: bold; color: #C0460A; }
+  .flow-box .desc { font-size: 0.82em; color: #888; margin-top: 4px; }
+  .arrow { font-size: 2em; color: #E07B39; }
+
+  /* カード */
+  .cards {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    margin-top: 16px;
+    justify-content: center;
+  }
+  .card {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: left;
+    border: 1px solid #F0D5BE;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .card .icon { font-size: 2em; margin-bottom: 8px; }
+  .card h3 { color: #C0460A; margin-bottom: 6px; }
+  .card p  { font-size: 0.9em; color: #666; }
+
+  /* ステップリスト */
+  .step-list { width: 100%; text-align: left; margin-top: 16px; }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+    border-left: 4px solid #E07B39;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+  .step-num {
+    font-size: 1.6em;
+    font-weight: bold;
+    color: #E07B39;
+    min-width: 44px;
+    text-align: center;
+  }
+  .step-content h3 { font-size: 1.05em; margin-bottom: 2px; color: #2D2D2D; }
+  .step-content p  { font-size: 0.88em; color: #777; }
+
+  /* コードブロック */
+  .code-block {
+    background: #2D2D2D;
+    border-radius: 10px;
+    padding: 18px 24px;
+    text-align: left;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95em;
+    color: #F0C080;
+    width: 100%;
+    margin: 14px 0;
+    line-height: 2;
+  }
+  .code-block .comment { color: #88C888; }
+
+  /* ハイライトボックス */
+  .highlight-box {
+    background: rgba(224,123,57,0.1);
+    border: 1px solid rgba(224,123,57,0.35);
+    border-radius: 12px;
+    padding: 20px 28px;
+    margin: 16px 0;
+    width: 100%;
+    text-align: left;
+  }
+  .highlight-box h3 { color: #C0460A; margin-bottom: 8px; font-size: 1em; }
+  .highlight-box p  { font-size: 0.92em; color: #555; line-height: 1.9; }
+
+  /* 部門カード（スライド10用） */
+  .dept-cards {
+    display: flex;
+    gap: 18px;
+    width: 100%;
+    margin-top: 16px;
+  }
+  .dept-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: left;
+    border-top: 5px solid #E07B39;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  }
+  .dept-card.green  { border-top-color: #5B8C5A; }
+  .dept-card.blue   { border-top-color: #4A7FA5; }
+  .dept-card .dept-icon { font-size: 2em; margin-bottom: 8px; }
+  .dept-card .dept-name {
+    font-size: 0.78em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #888;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .dept-card.green .dept-name { color: #5B8C5A; }
+  .dept-card.blue  .dept-name { color: #4A7FA5; }
+  .dept-card h3 { font-size: 1em; color: #2D2D2D; margin-bottom: 8px; line-height: 1.4; }
+  .dept-card .feasibility {
+    display: inline-block;
+    font-size: 0.78em;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  .dept-card .feasibility.easy   { background: #E8F5E9; color: #388E3C; }
+  .dept-card .feasibility.medium { background: #FFF3E0; color: #E65100; }
+  .dept-card .feasibility.hard   { background: #FCE4EC; color: #C62828; }
+  .dept-card p { font-size: 0.83em; color: #666; line-height: 1.7; }
+
+  /* ステップバッジ */
+  .step-badge {
+    display: inline-block;
+    background: #E07B39;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.82em;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+
+  /* ダイアグラム */
+  .diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    font-size: 0.95em;
+    flex-wrap: wrap;
+  }
+  .diagram-box {
+    background: #fff;
+    border: 1px solid #E07B39;
+    border-radius: 8px;
+    padding: 12px 18px;
+    color: #2D2D2D;
+    text-align: center;
+    font-size: 0.9em;
+  }
+  .diagram-arrow { color: #E07B39; font-size: 1.4em; }
+
+  /* まとめ用 */
+  .final-flow { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 20px 0; }
+  .final-item { text-align: center; padding: 20px; background: rgba(255,255,255,0.2); border-radius: 12px; min-width: 150px; }
+  .final-item .fi { font-size: 2em; }
+  .final-item p  { font-size: 0.85em; color: rgba(255,255,255,0.85); margin-top: 6px; }
+  .final-item strong { display: block; color: #fff; margin-top: 4px; }
+
+  .big-icon { font-size: 3.5em; margin-bottom: 14px; }
+
+  /* ナビゲーション */
+  .nav {
+    position: fixed;
+    bottom: 24px;
+    right: 36px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+  }
+  .nav button {
+    background: #E07B39;
+    border: none;
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+    box-shadow: 0 2px 6px rgba(192,70,10,0.3);
+  }
+  .nav button:hover { background: #C0460A; }
+
+  .slide-num {
+    position: fixed;
+    bottom: 32px;
+    left: 36px;
+    color: #aaa;
+    font-size: 0.85em;
+  }
+
+  /* タイトルスライドの白テキスト */
+  .slide-title p, .slide-summary p { color: rgba(255,255,255,0.85); }
+  .slide-summary .final-flow .fi { }
+</style>
+</head>
+<body>
+
+<!-- ロゴ（全スライド共通） -->
+<img class="logo" src="https://www.fukiya-meals.co.jp/wp-content/uploads/2026/01/fukiya_logo2026.png"
+     alt="富喜屋" onerror="this.style.display='none'">
+
+<!-- スライド1: タイトル -->
+<div class="slide slide-title active">
+  <div style="font-size:3.2em; margin-bottom:16px;">🤖</div>
+  <h1>AIでアプリを作ってみよう！</h1>
+  <p class="subtitle">Claude × GitHub × Streamlit 入門</p>
+  <p class="date-info">富喜屋 社内AI勉強会</p>
+</div>
+
+<!-- スライド2: チャット型AIとの違い（概要） -->
+<div class="slide slide-warm">
+  <h2>💬 これまでのAIと何が違うの？</h2>
+  <div class="cards" style="margin-top: 10px;">
+
+    <div class="card" style="border-top: 4px solid #aaa;">
+      <div class="icon">💬</div>
+      <h3 style="color:#888;">チャット型AI<br><span style="font-size:0.85em; font-weight:normal;">ChatGPT・Gemini など</span></h3>
+      <p style="margin-top:10px; line-height:2;">
+        質問する → 文章で答えが返る<br>
+        コードは自分でコピペして使う<br>
+        ファイルの中身を直接見られない<br>
+        <strong style="color:#aaa;">「アドバイスをくれる人」</strong>
+      </p>
+    </div>
+
+    <div style="display:flex; align-items:center; font-size:2.5em; color:#E07B39; padding: 0 4px;">→</div>
+
+    <div class="card" style="border-top: 4px solid #E07B39;">
+      <div class="icon">🤖</div>
+      <h3 style="color:#C0460A;">Claude Code<br><span style="font-size:0.85em; font-weight:normal;">今回使うAI</span></h3>
+      <p style="margin-top:10px; line-height:2;">
+        お願いする → ファイルを直接編集してくれる<br>
+        コードを書いて自動で実行もしてくれる<br>
+        GitHubへの保存・Streamlit公開も自動<br>
+        <strong style="color:#C0460A;">「一緒に作業してくれる人」</strong>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- スライド3: 富喜屋での実体験 -->
+<div class="slide slide-light">
+  <h2>📋 富喜屋での実体験から</h2>
+
+  <div style="display:flex; gap:20px; width:100%; margin-top: 8px;">
+
+    <div class="card" style="border-top: 4px solid #ddd; flex:1;">
+      <div style="font-size:1.8em; margin-bottom:8px;">😔</div>
+      <h3 style="color:#888;">昨年：ChatGPTで献立チェックを試みた</h3>
+      <div style="margin-top:12px; line-height:2; font-size:0.9em; color:#666;">
+        <p>✗ ExcelをAIに渡しても構造を理解できなかった</p>
+        <p>✗ セルの位置関係や結合が読み取れなかった</p>
+        <p>✗ 「このセルに何が入っている？」が分からなかった</p>
+        <p>✗ 結果的に使い物にならなかった</p>
+      </div>
+    </div>
+
+    <div style="display:flex; align-items:center; font-size:2.5em; color:#E07B39;">→</div>
+
+    <div class="card" style="border-top: 4px solid #E07B39; flex:1;">
+      <div style="font-size:1.8em; margin-bottom:8px;">😊</div>
+      <h3 style="color:#C0460A;">今回：Claude Codeでアプリを作る</h3>
+      <div style="margin-top:12px; line-height:2; font-size:0.9em; color:#555;">
+        <p>✅ AIがファイルの構造ごと理解して編集</p>
+        <p>✅ ExcelをStreamlitアプリに変換できる</p>
+        <p>✅ 「このデータを〇〇して」が正確に伝わる</p>
+        <p>✅ 修正も日本語でお願いするだけ</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="highlight-box" style="margin-top:16px;">
+    <p style="text-align:center;">
+      <strong style="color:#C0460A;">チャット型AIはアドバイザー、Claude Codeは一緒に手を動かしてくれる仲間です。</strong>
+    </p>
+  </div>
+</div>
+
+<!-- スライド4（旧2）: 今日のゴール -->
+<div class="slide slide-light">
+  <h2>🎯 今日のゴール</h2>
+  <div class="highlight-box" style="text-align:center; margin: 10px 0 20px;">
+    <p style="font-size:1.3em; color:#2D2D2D; font-weight:bold; text-align:center;">
+      自分の業務に使えるシンプルなWebアプリを<br>ブラウザで動かす
+    </p>
+  </div>
+  <div class="cards">
+    <div class="card">
+      <div class="icon">✅</div>
+      <h3>プログラミング不要</h3>
+      <p>AIにお願いするだけでコードが生まれます</p>
+    </div>
+    <div class="card">
+      <div class="icon">✅</div>
+      <h3>無料で公開できる</h3>
+      <p>作ったアプリをURLで誰とでも共有できます</p>
+    </div>
+    <div class="card">
+      <div class="icon">✅</div>
+      <h3>業務に即活用</h3>
+      <p>今日作ったものをそのまま使い始められます</p>
+    </div>
+  </div>
+</div>
+
+<!-- スライド3: 全体の流れ -->
+<div class="slide slide-warm">
+  <h2>🗺️ 全体の流れ</h2>
+  <div class="flow" style="margin-top: 24px;">
+    <div class="flow-box">
+      <div class="icon">💻</div>
+      <div class="name">VS Code + Claude</div>
+      <div class="desc">コードを書く</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-box">
+      <div class="icon">🐙</div>
+      <div class="name">GitHub</div>
+      <div class="desc">コードを保存・共有</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="flow-box">
+      <div class="icon">🌐</div>
+      <div class="name">Streamlit Cloud</div>
+      <div class="desc">アプリを公開</div>
+    </div>
+  </div>
+  <div style="display:flex; gap:12px; width:100%; margin-top:4px;">
+    <div style="flex:1; background:#fff; border-radius:10px; padding:14px 16px; border:1px solid #F0D5BE; text-align:center;">
+      <div style="font-size:0.8em; color:#888; margin-bottom:4px;">👤 各メンバーの役割</div>
+      <p style="font-size:0.9em; color:#555;">Claudeと一緒にコードを作り<br>GitHubにプッシュする</p>
+    </div>
+    <div style="flex:1; background:#fff; border-radius:10px; padding:14px 16px; border:1px solid #F0D5BE; text-align:center;">
+      <div style="font-size:0.8em; color:#888; margin-bottom:4px;">👑 宮崎さんの役割</div>
+      <p style="font-size:0.9em; color:#555;">初回のみ「Create app」で設定<br>更新は自動・アクセス管理も一元担当</p>
+    </div>
+    <div style="flex:1; background:#FFF3E0; border-radius:10px; padding:14px 16px; border:1px solid #E07B39; text-align:center;">
+      <div style="font-size:0.8em; color:#C0460A; margin-bottom:4px; font-weight:bold;">✅ 結果</div>
+      <p style="font-size:0.9em; color:#555;">URLが発行されて<br>社内で誰でも使える</p>
+    </div>
+  </div>
+</div>
+
+<!-- スライド4: 3つのツールの役割 -->
+<div class="slide slide-light">
+  <h2>🧰 3つのツールの役割</h2>
+  <div class="cards" style="margin-top:10px;">
+    <div class="card">
+      <div class="icon">🤖</div>
+      <h3>Claude Code + VS Code</h3>
+      <p>AIがコードを書いてくれる。<br>「〇〇するアプリを作って」と<br>日本語でお願いするだけでOK。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🐙</div>
+      <h3>GitHub</h3>
+      <p>コードを保存・管理する場所。<br>Googleドライブのコード版。<br>チームで共有・履歴管理ができる。</p>
+    </div>
+    <div class="card">
+      <div class="icon">🌐</div>
+      <h3>Streamlit Cloud</h3>
+      <p>GitHubのコードを読み込んで<br>Webアプリとして公開してくれる。<br>URLが発行されてすぐ使える。</p>
+    </div>
+  </div>
+</div>
+
+<!-- スライド5: STEP1 -->
+<div class="slide slide-orange">
+  <div class="step-badge">STEP 1</div>
+  <h2>💻 VS Code + Claude でコードを書く</h2>
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">①</div>
+      <div class="step-content">
+        <h3>VS Code（エディタ）を開く</h3>
+        <p>コードを書く専用のメモ帳のようなアプリ</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">②</div>
+      <div class="step-content">
+        <h3>Claude Code を起動する</h3>
+        <p>VS Codeの中でAIと会話しながら作業できる</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">③</div>
+      <div class="step-content">
+        <h3>Claudeに日本語でお願いする</h3>
+        <p>「〇〇できるStreamlitアプリを作って」と入力するだけ</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">④</div>
+      <div class="step-content">
+        <h3>app.py というファイルができる</h3>
+        <p>Claudeが自動でコードを書いてくれる</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- スライド6: STEP1補足 -->
+<div class="slide slide-warm">
+  <div class="step-badge">STEP 1 補足</div>
+  <h2>🗣️ Claudeへのお願いの仕方</h2>
+  <p style="text-align:left; width:100%; color:#888; margin-bottom:12px;">こんなふうに日本語で話しかけるだけでOKです：</p>
+  <div class="code-block">
+    <span class="comment"># 例1：シンプルな計算アプリ</span><br>
+    「数字を2つ入力したら合計・差・積・商を表示する<br>
+    　Streamlitアプリを作ってください」<br><br>
+    <span class="comment"># 例2：テキスト処理</span><br>
+    「テキストを貼り付けたら文字数をカウントして<br>
+    　表示してくれるStreamlitアプリを作ってください」<br><br>
+    <span class="comment"># 例3：ファイル読み込み</span><br>
+    「Excelのデータを読み込んでグラフで表示する<br>
+    　Streamlitアプリを作ってください」
+  </div>
+  <div class="highlight-box">
+    <h3>💡 ポイント</h3>
+    <p>「Streamlitアプリを作って」と伝えるだけで、そのまま公開できる形で作ってくれます。<br>
+    うまくいかなければ「〇〇がうまくいかない、直して」と追加で頼めばOKです。</p>
+  </div>
+</div>
+
+<!-- スライド7: STEP2 -->
+<div class="slide slide-green">
+  <div class="step-badge">STEP 2</div>
+  <h2>🐙 GitHub にコードを保存する</h2>
+  <div class="step-list">
+    <div class="step-item">
+      <div class="step-num">①</div>
+      <div class="step-content">
+        <h3>GitHubにリポジトリ（保存場所）を作る</h3>
+        <p>github.com にアクセス → 「New repository」をクリック</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">②</div>
+      <div class="step-content">
+        <h3>Claudeに「GitHubにプッシュして」と頼む</h3>
+        <p>コマンド操作もAIが全部やってくれる</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">③</div>
+      <div class="step-content">
+        <h3>GitHubにコードが保存される</h3>
+        <p>github.com/ユーザー名/リポジトリ名 でコードが管理される</p>
+      </div>
+    </div>
+  </div>
+  <div class="highlight-box">
+    <h3>💡 GitHubって何？</h3>
+    <p>コードのGoogleドライブ。保存・共有・バックアップが全部できます。<br>
+    変更履歴も残るので「前の状態に戻す」こともできます。</p>
+  </div>
+</div>
+
+<!-- スライド8: STEP3 -->
+<div class="slide slide-light">
+  <div class="step-badge">STEP 3</div>
+  <h2>🌐 Streamlit Cloud でアプリを公開する</h2>
+
+  <div style="display:flex; gap:20px; width:100%; margin-top:8px; align-items:flex-start;">
+
+    <div class="step-list" style="flex:1.4; margin-top:0;">
+      <div class="step-item">
+        <div class="step-num">①</div>
+        <div class="step-content">
+          <h3>アプリの完成コードをGitHubにプッシュ</h3>
+          <p>各自がClaudeと作ったコードをFukiya-AIのリポジトリへ</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">②</div>
+        <div class="step-content">
+          <h3>【初回のみ】宮崎さんがStreamlitで「Create app」</h3>
+          <p>リポジトリを選んで最初の1回だけデプロイ設定をする</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">③</div>
+        <div class="step-content">
+          <h3>以降はGitHubプッシュだけで自動反映</h3>
+          <p>コードを更新してプッシュするだけ → 宮崎さんへの依頼不要！</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">④</div>
+        <div class="step-content">
+          <h3>URLが発行 → 全員で使える</h3>
+          <p>そのURLをチームに共有すれば、誰でもブラウザで使える</p>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<!-- スライド9: 改善の繰り返し -->
+<div class="slide slide-orange">
+  <h2>🔄 アプリを改善したいときは？</h2>
+  <div class="diagram" style="margin: 28px 0;">
+    <div class="diagram-box">①Claudeに<br>修正を頼む</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box">②コードが<br>変わる</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box">③GitHubに<br>プッシュ</div>
+    <div class="diagram-arrow">→</div>
+    <div class="diagram-box">④アプリが<br>自動で更新</div>
+  </div>
+  <div class="highlight-box">
+    <h3>💡 ポイント</h3>
+    <p>
+      GitHubにプッシュするだけで、<strong style="color:#C0460A;">Streamlitのアプリが自動で更新</strong>されます。<br>
+      「ボタンの色を変えたい」「項目を追加したい」→ Claudeに頼む → プッシュ → 完了！<br><br>
+      この繰り返しでアプリをどんどん育てていけます。
+    </p>
+  </div>
+</div>
+
+<!-- スライド10: 部門別アプリ事例 -->
+<div class="slide slide-warm">
+  <h2>🏢 富喜屋でこんなアプリが作れます</h2>
+  <div class="dept-cards">
+
+    <div class="dept-card">
+      <div class="dept-icon">📦</div>
+      <div class="dept-name">仕入部</div>
+      <h3>請求書の金額を<br>Excelに自動入力</h3>
+      <span class="feasibility easy">★☆☆ 当日できる！</span>
+      <p>請求書の情報を入力すると、<br>Excelの表に自動で転記してくれる。<br>入力ミスを減らし、時間を大幅短縮。</p>
+    </div>
+
+    <div class="dept-card green">
+      <div class="dept-icon">🚚</div>
+      <div class="dept-name" style="color:#5B8C5A;">配送課</div>
+      <h3>距離・時間・商品種類から<br>積み込み順序を自動決定</h3>
+      <span class="feasibility medium">★★☆ 簡易版なら当日OK</span>
+      <p>配送先・出発時間・商品を入力すると<br>最適な積み込み順をExcelで出力。<br>ドライバーの段取りをサポート。</p>
+    </div>
+
+    <div class="dept-card blue">
+      <div class="dept-icon">🥗</div>
+      <div class="dept-name" style="color:#4A7FA5;">栄養管理部</div>
+      <h3>スタッフのシフト表を<br>自動作成</h3>
+      <span class="feasibility hard">★★★ 勉強会後の目標</span>
+      <p>スタッフの希望・人数条件を入力すると<br>シフト案を自動生成。<br>まずは簡単な割り当てから始めます。</p>
+    </div>
+
+  </div>
+  <div class="highlight-box" style="margin-top: 16px;">
+    <p style="text-align:center;">
+      <strong style="color:#C0460A;">最初は小さく作って、少しずつ育てる</strong>のがポイントです。
+    </p>
+  </div>
+</div>
+
+<!-- スライド11: 今日やること -->
+<div class="slide slide-light">
+  <div class="step-badge">今日やること</div>
+  <h2>🛠️ 実際にやってみよう</h2>
+  <div class="step-list" style="margin-top:10px;">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h3>自分の業務で「あったら便利」なアプリを考える</h3>
+        <p>小さくていい。入力して何か表示されるだけでもOK</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h3>Claudeに日本語でお願いしてコードを作る</h3>
+        <p>VS Code + Claude Code を使って一緒に作成</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h3>GitHubにプッシュ → Streamlitで公開</h3>
+        <p>自分だけのアプリURLが完成！</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- スライド12: まとめ -->
+<div class="slide slide-summary">
+  <div class="big-icon">🎉</div>
+  <h1 style="font-size:2.2em;">まとめ</h1>
+  <div class="final-flow" style="margin-top: 24px;">
+    <div class="final-item">
+      <div class="fi">🤖</div>
+      <strong>Claude + VS Code</strong>
+      <p>AIに頼んで<br>コードを作る</p>
+    </div>
+    <div style="font-size:2em; color:rgba(255,255,255,0.7); display:flex; align-items:center;">→</div>
+    <div class="final-item">
+      <div class="fi">🐙</div>
+      <strong>GitHub</strong>
+      <p>コードを<br>保存・共有</p>
+    </div>
+    <div style="font-size:2em; color:rgba(255,255,255,0.7); display:flex; align-items:center;">→</div>
+    <div class="final-item">
+      <div class="fi">🌐</div>
+      <strong>Streamlit</strong>
+      <p>URLで<br>アプリ公開</p>
+    </div>
+  </div>
+  <div style="background:rgba(255,255,255,0.15); border-radius:12px; padding:20px 28px; margin-top:20px; width:100%;">
+    <p style="text-align:center; font-size:1.1em; color:#fff;">
+      プログラミングの知識がなくても、<br>
+      <strong>AIと一緒なら業務アプリが作れます。</strong><br>
+      まずは小さく作って、少しずつ育てていきましょう！
+    </p>
+  </div>
+</div>
+
+<!-- ナビゲーション -->
+<div class="nav">
+  <button onclick="prevSlide()">← 前へ</button>
+  <button onclick="nextSlide()">次へ →</button>
+</div>
+<div class="slide-num" id="slideNum">1 / 12</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+
+  function showSlide(n) {
+    slides[current].classList.remove('active');
+    current = (n + total) % total;
+    slides[current].classList.add('active');
+    document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
+
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp') prevSlide();
+  });
+</script>
+</body>
+</html>

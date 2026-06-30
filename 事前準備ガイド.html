@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI勉強会 事前準備ガイド｜富喜屋</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+    background: #FFF8F0;
+    color: #2D2D2D;
+    line-height: 1.7;
+  }
+
+  /* ヘッダー */
+  .header {
+    background: linear-gradient(135deg, #C0460A, #E07B39);
+    color: #fff;
+    padding: 36px 40px 32px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .header img { height: 52px; filter: brightness(0) invert(1); }
+  .header-text h1 { font-size: 1.7em; margin-bottom: 4px; }
+  .header-text p  { font-size: 0.95em; opacity: 0.88; }
+
+  /* メインコンテンツ */
+  .container { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* 所要時間バナー */
+  .time-banner {
+    background: #fff;
+    border: 2px solid #E07B39;
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 8px rgba(224,123,57,0.12);
+  }
+  .time-banner .icon { font-size: 2em; }
+  .time-banner p { font-size: 0.95em; color: #555; }
+  .time-banner strong { color: #C0460A; }
+
+  /* ステップカード */
+  .step-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    border-left: 6px solid #E07B39;
+    position: relative;
+  }
+  .step-card.done { border-left-color: #5B8C5A; opacity: 0.7; }
+
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .step-number {
+    background: #E07B39;
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 1.2em; font-weight: bold; color: #2D2D2D; }
+  .step-subtitle { font-size: 0.85em; color: #888; margin-top: 2px; }
+
+  /* チェックボックス */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #F5E8DC;
+    cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: #E07B39;
+    cursor: pointer;
+  }
+  .check-item label {
+    font-size: 0.97em;
+    color: #333;
+    cursor: pointer;
+    line-height: 1.6;
+  }
+  .check-item input:checked + label { color: #aaa; text-decoration: line-through; }
+
+  /* 注意ボックス */
+  .alert-box {
+    background: #FFF3CD;
+    border: 1px solid #FFCA28;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    font-size: 0.9em;
+    color: #555;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-box .ai { font-size: 1.3em; flex-shrink: 0; }
+
+  /* ポイントボックス */
+  .point-box {
+    background: #F0F5EC;
+    border: 1px solid #5B8C5A;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    font-size: 0.9em;
+    color: #444;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .point-box .ai { font-size: 1.3em; flex-shrink: 0; }
+
+  /* コマンドブロック */
+  .cmd {
+    background: #2D2D2D;
+    color: #F0C080;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin: 12px 0 4px;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .cmd-copy {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 0.78em;
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .cmd-copy:hover { background: rgba(255,255,255,0.25); }
+
+  /* URL表示 */
+  .url-box {
+    background: #EEF4FF;
+    border: 1px solid #90B4E8;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 0.92em;
+    color: #2D5FAA;
+    font-weight: bold;
+    word-break: break-all;
+  }
+
+  /* 進捗バー */
+  .progress-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .progress-bar-bg {
+    background: #F0D5BE;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #C0460A, #E07B39);
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* 完了メッセージ */
+  .complete-msg {
+    display: none;
+    background: linear-gradient(135deg, #C0460A, #E07B39);
+    color: #fff;
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: center;
+    margin-top: 32px;
+  }
+  .complete-msg h2 { font-size: 1.6em; margin-bottom: 8px; }
+  .complete-msg p  { opacity: 0.9; }
+
+  /* セクション見出し */
+  .section-note {
+    font-size: 0.83em;
+    color: #888;
+    background: #FFF1E0;
+    border-radius: 6px;
+    padding: 4px 12px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
+  /* フッター */
+  .footer {
+    text-align: center;
+    padding: 32px;
+    color: #bbb;
+    font-size: 0.85em;
+    border-top: 1px solid #F0D5BE;
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="header">
+  <img src="https://www.fukiya-meals.co.jp/wp-content/uploads/2026/01/fukiya_logo2026.png"
+       alt="富喜屋" onerror="this.style.display='none'">
+  <div class="header-text">
+    <h1>AI勉強会 事前準備ガイド</h1>
+    <p>当日までに、以下の手順を順番に完了させてください。わからない箇所はそのままにせず、メモしておいてください。</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 所要時間 -->
+  <div class="time-banner">
+    <div class="icon">⏱️</div>
+    <p>全部で <strong>約30〜45分</strong> で完了できます。順番通りに進めてください。<br>
+    困ったときは宮崎（<strong>miyazaki@fukiya-meals.co.jp</strong>）に連絡してください。</p>
+  </div>
+
+  <!-- 進捗バー -->
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>📋 準備の進捗</span>
+      <span id="progressText">0 / 7 完了</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div>
+        <div class="step-title">📧 Claude Codeの招待メールを承認する</div>
+        <div class="step-subtitle">宮崎から届いたメールで登録します</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1a" onchange="updateProgress()">
+      <label for="c1a">宮崎から「Claudeチームへの招待」メールが届いていることを確認する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1b" onchange="updateProgress()">
+      <label for="c1b">メール内の「招待を承認する」ボタンをクリックする</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1c" onchange="updateProgress()">
+      <label for="c1c">アカウント登録を完了し、<b>claude.ai</b> にログインできることを確認する</label>
+    </div>
+    <div class="point-box">
+      <div class="ai">💡</div>
+      <div>ログインすると「Claude」と会話できる画面が表示されれば成功です。<br>
+      このアカウントを勉強会でも使います。</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div>
+        <div class="step-title">🐙 GitHubアカウントを作成する</div>
+        <div class="step-subtitle">コードを保存・管理する場所です</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c2a" onchange="updateProgress()">
+      <label for="c2a">以下のURLにアクセスする</label>
+    </div>
+    <div class="url-box">🔗 https://github.com</div>
+    <div class="check-item">
+      <input type="checkbox" id="c2b" onchange="updateProgress()">
+      <label for="c2b">右上の「Sign up」をクリックしてアカウントを作成する<br>
+      <span style="color:#888; font-size:0.9em;">メールアドレス・パスワード・ユーザー名を設定します</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c2c" onchange="updateProgress()">
+      <label for="c2c">届いた確認メールを開いて、メール認証を完了させる</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c2d" onchange="updateProgress()">
+      <label for="c2d">GitHubにログインできることを確認する</label>
+    </div>
+    <div class="alert-box">
+      <div class="ai">⚠️</div>
+      <div>ユーザー名は後から変更しにくいです。<b>ローマ字のフルネーム</b>や<b>会社名+名前</b>など、わかりやすいものにしましょう。<br>
+      例：<b>yamada-fukiya</b>、<b>fukiya-sato</b></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div>
+        <div class="step-title">💻 VS Codeをインストールする</div>
+        <div class="step-subtitle">コードを書く専用のエディタです（無料）</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c3a" onchange="updateProgress()">
+      <label for="c3a">以下のURLにアクセスする</label>
+    </div>
+    <div class="url-box">🔗 https://code.visualstudio.com</div>
+    <div class="check-item">
+      <input type="checkbox" id="c3b" onchange="updateProgress()">
+      <label for="c3b">青い「Download for Windows」ボタンをクリックしてダウンロードする</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c3c" onchange="updateProgress()">
+      <label for="c3c">ダウンロードしたファイルを開いてインストールする<br>
+      <span style="color:#888; font-size:0.9em;">すべて「次へ」→「インストール」で進めてOKです</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c3d" onchange="updateProgress()">
+      <label for="c3d">VS Codeが起動することを確認する</label>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div>
+        <div class="step-title">🤖 VS CodeにClaude Code拡張機能を入れる</div>
+        <div class="step-subtitle">VS CodeでAIと話せるようになります</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4a" onchange="updateProgress()">
+      <label for="c4a">VS Codeを開く</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4b" onchange="updateProgress()">
+      <label for="c4b">左側のバーにある「四角が4つ」のアイコン（拡張機能）をクリックする</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4c" onchange="updateProgress()">
+      <label for="c4c">検索欄に「<b>Claude Code</b>」と入力して検索する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4d" onchange="updateProgress()">
+      <label for="c4d">「Claude Code」（Anthropic製）の「インストール」ボタンをクリックする</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4e" onchange="updateProgress()">
+      <label for="c4e">VS Codeの左下または右側にClaudeのアイコンが表示されることを確認する</label>
+    </div>
+    <div class="point-box">
+      <div class="ai">💡</div>
+      <div>インストール後、Claudeのアイコンをクリックして<br>
+      先ほど作ったClaudeアカウントでログインしてください。</div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div>
+        <div class="step-title">🐍 Pythonをインストールする</div>
+        <div class="step-subtitle">アプリを動かすために必要なプログラムです</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c5a" onchange="updateProgress()">
+      <label for="c5a">以下のURLにアクセスする</label>
+    </div>
+    <div class="url-box">🔗 https://www.python.org/downloads/</div>
+    <div class="check-item">
+      <input type="checkbox" id="c5b" onchange="updateProgress()">
+      <label for="c5b">「Download Python 3.xx.x」の黄色いボタンをクリックしてダウンロードする</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c5c" onchange="updateProgress()">
+      <label for="c5c">ダウンロードしたファイルを開く</label>
+    </div>
+    <div class="alert-box">
+      <div class="ai">⚠️</div>
+      <div><b>インストール画面の一番下にある<br>「Add Python to PATH」に必ずチェックを入れること！</b><br>
+      これを忘れると次のステップができません。チェックを入れてから「Install Now」をクリック。</div>
+    </div>
+    <div class="check-item" style="margin-top:12px;">
+      <input type="checkbox" id="c5d" onchange="updateProgress()">
+      <label for="c5d">「Add Python to PATH」にチェックを入れてからインストールした</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c5e" onchange="updateProgress()">
+      <label for="c5e">「Setup was successful」と表示されてインストール完了した</label>
+    </div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <div>
+        <div class="step-title">🌐 Streamlitをインストールする</div>
+        <div class="step-subtitle">アプリを作るための部品です（コマンドを1行入力するだけ）</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c6a" onchange="updateProgress()">
+      <label for="c6a">キーボードの「Windowsキー」を押しながら「R」を押す<br>
+      <span style="color:#888; font-size:0.9em;">小さい「ファイル名を指定して実行」という画面が出てきます</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c6b" onchange="updateProgress()">
+      <label for="c6b">「<b>cmd</b>」と入力してEnterを押す（黒い画面が開きます）</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c6c" onchange="updateProgress()">
+      <label for="c6c">黒い画面に以下をそのままコピペしてEnterを押す</label>
+    </div>
+    <div class="cmd">
+      <span>pip install streamlit</span>
+      <button class="cmd-copy" onclick="copyCmd(this, 'pip install streamlit')">コピー</button>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c6d" onchange="updateProgress()">
+      <label for="c6d">しばらく待ってインストールが完了した（「Successfully installed」と表示される）</label>
+    </div>
+    <div class="point-box">
+      <div class="ai">💡</div>
+      <div>インストール中は黒い画面にいろんな文字が流れますが、正常です。<br>
+      止まるまでそのままお待ちください（1〜3分程度）。</div>
+    </div>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">7</div>
+      <div>
+        <div class="step-title">🏢 富喜屋GitHubグループへの招待を承認する</div>
+        <div class="step-subtitle">社内チームのコード共有グループに参加します</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7a" onchange="updateProgress()">
+      <label for="c7a">「Fukiya-AI」というGitHubグループへの招待メールが宮崎から届いていることを確認する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7b" onchange="updateProgress()">
+      <label for="c7b">メール内のリンクをクリックして、GitHubにログインした状態で招待を承認する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7c" onchange="updateProgress()">
+      <label for="c7c">GitHub上で「Fukiya-AI」というグループに参加できていることを確認する</label>
+    </div>
+    <div class="point-box">
+      <div class="ai">💡</div>
+      <div>GitHubにログインしていない状態でリンクをクリックすると承認できないことがあります。<br>
+      先に <b>github.com</b> でログインしてからリンクをクリックしてください。</div>
+    </div>
+  </div>
+
+  <!-- 完了メッセージ -->
+  <div class="complete-msg" id="completeMsg">
+    <h2>🎉 準備完了！</h2>
+    <p>すべての準備ができました。当日お会いしましょう！<br>
+    困ったことがあれば <b>miyazaki@fukiya-meals.co.jp</b> までご連絡ください。</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  富喜屋 社内AI勉強会 事前準備ガイド
+</div>
+
+<script>
+  const totalSteps = 7;
+
+  function updateProgress() {
+    const allChecks = document.querySelectorAll('input[type="checkbox"]');
+    const stepsDone = new Set();
+
+    allChecks.forEach(cb => {
+      if (cb.checked) {
+        const stepNum = cb.id.replace(/[a-z]$/, '').replace('c', '');
+        stepsDone.add(stepNum);
+      }
+    });
+
+    // 各ステップが全チェック済みか確認
+    const stepCheckMap = {
+      '1': ['c1a','c1b','c1c'],
+      '2': ['c2a','c2b','c2c','c2d'],
+      '3': ['c3a','c3b','c3c','c3d'],
+      '4': ['c4a','c4b','c4c','c4d','c4e'],
+      '5': ['c5a','c5b','c5c','c5d','c5e'],
+      '6': ['c6a','c6b','c6c','c6d'],
+      '7': ['c7a','c7b','c7c'],
+    };
+
+    let completedSteps = 0;
+    for (const [step, ids] of Object.entries(stepCheckMap)) {
+      if (ids.every(id => document.getElementById(id)?.checked)) {
+        completedSteps++;
+      }
+    }
+
+    const pct = Math.round((completedSteps / totalSteps) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = completedSteps + ' / ' + totalSteps + ' 完了';
+
+    const msg = document.getElementById('completeMsg');
+    msg.style.display = completedSteps === totalSteps ? 'block' : 'none';
+  }
+
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'コピー完了!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+</body>
+</html>
