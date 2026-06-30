@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI勉強会 実践ガイド（セットアップ編）｜富喜屋</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+    background: #FFF8F0;
+    color: #2D2D2D;
+    line-height: 1.7;
+  }
+
+  .header {
+    background: linear-gradient(135deg, #C0460A, #E07B39);
+    color: #fff;
+    padding: 36px 40px 32px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .header img { height: 52px; filter: brightness(0) invert(1); }
+  .header-text h1 { font-size: 1.7em; margin-bottom: 4px; }
+  .header-text p  { font-size: 0.95em; opacity: 0.88; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* 全体の流れ */
+  .flow-banner {
+    background: #fff;
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  }
+  .flow-banner h2 { font-size: 1.05em; color: #C0460A; margin-bottom: 16px; }
+  .flow-steps {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .flow-item {
+    background: #FFF1E0;
+    border: 1.5px solid #E07B39;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 0.88em;
+    color: #C0460A;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .flow-item.active {
+    background: #C0460A;
+    color: #fff;
+    border-color: #C0460A;
+  }
+  .flow-item.done {
+    background: #5B8C5A;
+    color: #fff;
+    border-color: #5B8C5A;
+  }
+  .flow-arrow { color: #E07B39; font-size: 1.1em; font-weight: bold; }
+
+  /* 時間バナー */
+  .time-banner {
+    background: #fff;
+    border: 2px solid #E07B39;
+    border-radius: 12px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 36px;
+    box-shadow: 0 2px 8px rgba(224,123,57,0.12);
+  }
+  .time-banner .icon { font-size: 2em; }
+  .time-banner p { font-size: 0.95em; color: #555; }
+  .time-banner strong { color: #C0460A; }
+
+  /* 進捗バー */
+  .progress-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 8px;
+  }
+  .progress-bar-bg {
+    background: #F0D5BE;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    background: linear-gradient(90deg, #C0460A, #E07B39);
+    height: 100%;
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+  }
+
+  /* フェーズ見出し */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 40px 0 20px;
+  }
+  .phase-badge {
+    background: linear-gradient(135deg, #C0460A, #E07B39);
+    color: #fff;
+    font-size: 0.82em;
+    font-weight: bold;
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .phase-title {
+    font-size: 1.25em;
+    font-weight: bold;
+    color: #2D2D2D;
+  }
+  .phase-time {
+    font-size: 0.82em;
+    color: #888;
+    background: #F5E8DC;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+
+  /* ステップカード */
+  .step-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    border-left: 6px solid #E07B39;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .step-number {
+    background: #E07B39;
+    color: #fff;
+    font-size: 1.05em;
+    font-weight: bold;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-title { font-size: 1.15em; font-weight: bold; color: #2D2D2D; }
+  .step-subtitle { font-size: 0.85em; color: #888; margin-top: 2px; }
+
+  /* チェックボックス */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #F5E8DC;
+    cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item input[type="checkbox"] {
+    width: 20px; height: 20px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: #E07B39;
+    cursor: pointer;
+  }
+  .check-item label {
+    font-size: 0.97em;
+    color: #333;
+    cursor: pointer;
+    line-height: 1.6;
+  }
+  .check-item input:checked + label { color: #bbb; text-decoration: line-through; }
+
+  /* 注意・ポイントボックス */
+  .alert-box {
+    background: #FFF3CD;
+    border: 1px solid #FFCA28;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.9em;
+    color: #555;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .point-box {
+    background: #F0F5EC;
+    border: 1px solid #5B8C5A;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 0.9em;
+    color: #444;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-box .ico, .point-box .ico { font-size: 1.3em; flex-shrink: 0; }
+
+  /* コマンドブロック */
+  .cmd {
+    background: #2D2D2D;
+    color: #F0C080;
+    font-family: 'Courier New', monospace;
+    font-size: 0.97em;
+    padding: 13px 18px;
+    border-radius: 8px;
+    margin: 10px 0 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .cmd span { flex: 1; }
+  .cmd-copy {
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 0.78em;
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: inherit;
+    flex-shrink: 0;
+  }
+  .cmd-copy:hover { background: rgba(255,255,255,0.25); }
+
+  /* キーボードショートカット */
+  .kbd {
+    display: inline-block;
+    background: #E8E8E8;
+    border: 1px solid #bbb;
+    border-bottom: 2px solid #999;
+    border-radius: 4px;
+    padding: 1px 8px;
+    font-size: 0.88em;
+    font-family: 'Courier New', monospace;
+    color: #333;
+    margin: 0 2px;
+  }
+
+  /* 入力サンプル */
+  .input-sample {
+    background: #EEF4FF;
+    border: 1px solid #90B4E8;
+    border-left: 4px solid #5B8FD0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 0.93em;
+    color: #2D4A7A;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* GitHub操作手順 */
+  .github-step {
+    background: #F8F8FF;
+    border: 1px solid #C5C8E8;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 10px 0;
+    font-size: 0.92em;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .github-step .num {
+    background: #6B73D0;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* 区切り線 */
+  .divider {
+    border: none;
+    border-top: 2px dashed #F0D5BE;
+    margin: 36px 0;
+  }
+
+  /* 完了バナー */
+  .finish-banner {
+    background: linear-gradient(135deg, #C0460A, #E07B39);
+    color: #fff;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    margin-top: 40px;
+  }
+  .finish-banner h2 { font-size: 1.7em; margin-bottom: 10px; }
+  .finish-banner p { opacity: 0.92; font-size: 1.05em; line-height: 1.8; }
+
+  .footer {
+    text-align: center;
+    padding: 32px;
+    color: #bbb;
+    font-size: 0.85em;
+    border-top: 1px solid #F0D5BE;
+    margin-top: 40px;
+  }
+
+  /* URL表示 */
+  .url-box {
+    background: #EEF4FF;
+    border: 1px solid #90B4E8;
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 0.92em;
+    color: #2D5FAA;
+    font-weight: bold;
+    word-break: break-all;
+  }
+
+  /* ラベル */
+  .tag {
+    display: inline-block;
+    background: #FDECEA;
+    border: 1px solid #F5A08B;
+    color: #C0460A;
+    font-size: 0.78em;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .tag.green {
+    background: #EDF5EC;
+    border-color: #5B8C5A;
+    color: #3B6A3A;
+  }
+  .tag.blue {
+    background: #EEF4FF;
+    border-color: #90B4E8;
+    color: #2D5FAA;
+  }
+</style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<div class="header">
+  <img src="https://www.fukiya-meals.co.jp/wp-content/uploads/2026/01/fukiya_logo2026.png"
+       alt="富喜屋" onerror="this.style.display='none'">
+  <div class="header-text">
+    <h1>AI勉強会 実践ガイド</h1>
+    <p>セットアップ編 ／ Claude Codeの環境を整えて、アプリ開発をスタートしよう</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 今日の流れ -->
+  <div class="flow-banner">
+    <h2>📋 今日の流れ</h2>
+    <div class="flow-steps">
+      <div class="flow-item done">✅ 事前準備</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item active">🔧 環境セットアップ</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🤖 Claude Codeを体験</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🚀 アプリを作る</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">🌐 公開する</div>
+    </div>
+  </div>
+
+  <!-- 時間目安 -->
+  <div class="time-banner">
+    <div class="icon">⏱️</div>
+    <p>このガイドは <strong>約30〜40分</strong> で完了します。<br>
+    わからない箇所は遠慮なく宮崎に声をかけてください。全員で進めます。</p>
+  </div>
+
+  <!-- 進捗バー -->
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>🔧 セットアップの進捗</span>
+      <span id="progressText">0 / 5 完了</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  </div>
+
+
+  <!-- ======================== PHASE 1 ======================== -->
+  <div class="phase-header">
+    <div class="phase-badge">PHASE 1</div>
+    <div class="phase-title">起動して動いているか確認する</div>
+    <div class="phase-time">⏱ 約5分</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">1</div>
+      <div>
+        <div class="step-title">💻 VS Code を起動する</div>
+        <div class="step-subtitle">スタートメニューまたはデスクトップのアイコンから</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1a" onchange="updateProgress()">
+      <label for="c1a">VS Code（青いアイコン）を起動する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1b" onchange="updateProgress()">
+      <label for="c1b">左サイドバーに <b>Claudeのアイコン（✳ のような放射状のマーク）</b> が表示されていることを確認する<br>
+      <span style="color:#888; font-size:0.88em;">テーマの色によって白やグレーに見えることがあります</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1c" onchange="updateProgress()">
+      <label for="c1c">Claudeアイコンをクリックして、チャット画面が開くことを確認する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c1d" onchange="updateProgress()">
+      <label for="c1d">Claude Codeにサインイン済みであることを確認する<br>
+      <span style="color:#888; font-size:0.88em;">「ログイン」や「Sign in」ボタンが表示されている場合 → クリックしてclaudeのアカウントでログイン</span></label>
+    </div>
+
+    <div class="point-box">
+      <div class="ico">💡</div>
+      <div>チャット画面に入力欄が表示されていればサインイン済みです。<br>
+      最初に「こんにちは！」と入力してEnterを押すと、Claudeが返事をしてくれます。</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">2</div>
+      <div>
+        <div class="step-title">🖥️ ターミナルを開いて動作確認する</div>
+        <div class="step-subtitle">PythonとStreamlitが正しく入っているか確かめます</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c2a" onchange="updateProgress()">
+      <label for="c2a">VS Code 上部メニューバーの <b>「…」→「ターミナル」→「新しいターミナル」</b> をクリックする</label>
+    </div>
+
+    <!-- VS Code メニュー 図解 -->
+    <div style="margin:10px 0 14px; font-size:0.88em;">
+
+      <!-- STEP 1: メニューバー -->
+      <div style="margin-bottom:6px; color:#C0460A; font-weight:bold; font-size:0.9em;">① 上のメニューバーの「…」をクリック</div>
+      <div style="background:#2D2D2D; border-radius:8px 8px 0 0; padding:7px 14px; display:flex; gap:16px; color:#ccc; font-size:0.93em; align-items:center;">
+        <span>ファイル(F)</span>
+        <span>編集(E)</span>
+        <span>選択(S)</span>
+        <span>表示(V)</span>
+        <span style="color:#F0C080; font-weight:bold; background:#094771; padding:2px 8px; border-radius:4px; border:1px solid #F0C080;">… ←ここ</span>
+      </div>
+
+      <!-- STEP 2: ...を押したドロップダウン -->
+      <div style="margin-top:14px; margin-bottom:6px; color:#C0460A; font-weight:bold; font-size:0.9em;">② 出てきたメニューから「ターミナル」をクリック</div>
+      <div style="background:#252526; border:1px solid #555; border-radius:8px; display:inline-block; min-width:180px; padding:6px 0; box-shadow:2px 4px 12px rgba(0,0,0,0.5);">
+        <div style="padding:7px 20px; color:#ccc; font-size:0.93em;">移動(G)</div>
+        <div style="padding:7px 20px; color:#ccc; font-size:0.93em;">実行(R)</div>
+        <div style="padding:7px 20px; color:#F0C080; font-weight:bold; background:#094771; font-size:0.93em;">ターミナル(T) 👈</div>
+        <div style="padding:7px 20px; color:#ccc; font-size:0.93em;">ヘルプ(H)</div>
+      </div>
+
+      <!-- STEP 3: ターミナルのサブメニュー -->
+      <div style="margin-top:14px; margin-bottom:6px; color:#C0460A; font-weight:bold; font-size:0.9em;">③ 「新しいターミナル」をクリック</div>
+      <div style="background:#252526; border:1px solid #555; border-radius:8px; display:inline-block; min-width:230px; padding:6px 0; box-shadow:2px 4px 12px rgba(0,0,0,0.5);">
+        <div style="padding:7px 20px; color:#F0C080; font-weight:bold; background:#094771; font-size:0.93em; display:flex; justify-content:space-between; gap:20px;">
+          <span>新しいターミナル 👈</span><span style="color:#aaa; font-weight:normal;">Ctrl+`</span>
+        </div>
+        <div style="padding:7px 20px; color:#888; font-size:0.93em;">ターミナルを分割</div>
+        <div style="padding:7px 20px; color:#888; font-size:0.93em;">ターミナルを閉じる</div>
+      </div>
+
+      <!-- 結果 -->
+      <div style="margin-top:14px; background:#1E1E1E; border:1px solid #444; border-radius:8px; padding:12px 16px; color:#aaa; font-size:0.9em;">
+        ✅ VS Codeの下側にターミナル（黒い入力欄）が開きます
+      </div>
+    </div>
+
+    <div class="point-box" style="margin-bottom:12px;">
+      <div class="ico">💡</div>
+      <div>慣れたら <span class="kbd">Ctrl</span>+<span class="kbd">`</span>（バッククォート・数字の1の左のキー）を押すだけで開けます。</div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c2b" onchange="updateProgress()">
+      <label for="c2b">VS Codeの下側に黒い（または暗い）入力欄が開いたことを確認する</label>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c2c" onchange="updateProgress()">
+      <label for="c2c">以下を入力してPythonのバージョンを確認する（3.x.x と表示されればOK）</label>
+    </div>
+    <div class="cmd">
+      <span>python --version</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'python --version')">コピー</button>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c2d" onchange="updateProgress()">
+      <label for="c2d">以下を入力してStreamlitのバージョンを確認する（バージョンが表示されればOK）</label>
+    </div>
+    <div class="cmd">
+      <span>streamlit --version</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'streamlit --version')">コピー</button>
+    </div>
+
+    <div class="alert-box">
+      <div class="ico">⚠️</div>
+      <div>「認識されません」や「not recognized」と表示された場合は宮崎に知らせてください。<br>
+      一緒に解決します。先に進んでも大丈夫です。</div>
+    </div>
+  </div>
+
+
+  <!-- ======================== PHASE 2 ======================== -->
+  <div class="phase-header">
+    <div class="phase-badge">PHASE 2</div>
+    <div class="phase-title">Gitの初期設定をする</div>
+    <div class="phase-time">⏱ 約5分</div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">3</div>
+      <div>
+        <div class="step-title">⚙️ あなたの名前とメールをGitに登録する</div>
+        <div class="step-subtitle">GitHubに「誰が変更したか」を記録するための設定です（初回のみ）</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c3a" onchange="updateProgress()">
+      <label for="c3a">ターミナルで以下を入力する（<b>「あなたの名前」を自分の名前に変えて</b>から実行）</label>
+    </div>
+    <div class="cmd" style="flex-direction:column; align-items:flex-start; gap:6px;">
+      <span>git config --global user.name "<span style="background:#F0C080; color:#2D2D2D; padding:0 4px; border-radius:3px;">ここに自分の名前</span>"</span>
+      <span style="color:#888; font-size:0.82em;">例）git config --global user.name "Miyazaki Hiroo"</span>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c3b" onchange="updateProgress()">
+      <label for="c3b">以下を入力する（<b>「メールアドレス」をGitHubに登録したメールに変えて</b>から実行）</label>
+    </div>
+    <div class="cmd" style="flex-direction:column; align-items:flex-start; gap:6px;">
+      <span>git config --global user.email "<span style="background:#F0C080; color:#2D2D2D; padding:0 4px; border-radius:3px;">ここにメールアドレス</span>"</span>
+      <span style="color:#888; font-size:0.82em;">例）git config --global user.email "yamada@fukiya-meals.co.jp"</span>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c3c" onchange="updateProgress()">
+      <label for="c3c">以下を入力して設定が保存されているか確認する（名前とメールが表示されればOK）</label>
+    </div>
+    <div class="cmd">
+      <span>git config --global --list</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'git config --global --list')">コピー</button>
+    </div>
+
+    <div class="point-box">
+      <div class="ico">💡</div>
+      <div>この設定はパソコンに1回だけ行えばOKです。<br>
+      次回からは設定不要です。</div>
+    </div>
+  </div>
+
+
+  <!-- ======================== PHASE 3 ======================== -->
+  <div class="phase-header">
+    <div class="phase-badge">PHASE 3</div>
+    <div class="phase-title">GitHubでプロジェクトを作る</div>
+    <div class="phase-time">⏱ 約10分</div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">4</div>
+      <div>
+        <div class="step-title">🐙 GitHubにリポジトリ（プロジェクト）を作る</div>
+        <div class="step-subtitle">テンプレートを使うので、セキュリティ設定が自動で入ります</div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c4a" onchange="updateProgress()">
+      <label for="c4a">ブラウザで以下のURLを開く（富喜屋のテンプレートリポジトリ）</label>
+    </div>
+    <div class="url-box" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+      <span>🔗 https://github.com/Fukiya-AI/project-template</span>
+      <button class="cmd-copy" style="background:#5B8FD0; color:#fff; border:none; padding:4px 14px; border-radius:6px; cursor:pointer; font-size:0.82em; white-space:nowrap;" onclick="copyCmd(this,'https://github.com/Fukiya-AI/project-template')">コピー</button>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c4b" onchange="updateProgress()">
+      <label for="c4b">緑色の「<b>Use this template</b>」ボタンをクリックする<br>
+      <span style="color:#888; font-size:0.88em;">→「Create a new repository」の画面が開きます</span></label>
+    </div>
+
+    <!-- 設定画面 左右レイアウト -->
+    <div style="display:flex; gap:20px; align-items:flex-start; margin:14px 0;">
+
+      <!-- 左：説明 -->
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:0.92em; color:#555; margin-bottom:10px; font-weight:bold;">次の画面でこの通り設定してください：</div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">①</div>
+          <div><b>Owner</b>：「<b>Fukiya-AI</b>」になっているか確認<br>
+          <span style="color:#888; font-size:0.88em;">なっていない場合はプルダウンで選択</span></div>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">②</div>
+          <div><b>Repository name</b>：プロジェクト名を入力<br>
+          <span style="color:#888; font-size:0.88em;">例：<b>practice-app</b>（英語・ハイフン可）</span></div>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">③</div>
+          <div><b>Description</b>：アプリの簡単な説明を入力<br>
+          <span style="color:#888; font-size:0.88em;">例：仕入れ請求書を読み込むアプリ（日本語OK）</span></div>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">④</div>
+          <div><b>Private</b>（非公開）を選ぶ</div>
+        </div>
+        <div class="github-step">
+          <div class="num">⑤</div>
+          <div>緑の「<b>Create repository</b>」をクリック</div>
+        </div>
+      </div>
+
+      <!-- 右：GitHub画面モックアップ -->
+      <div style="flex:1; min-width:0; background:#fff; border:1px solid #d0d7de; border-radius:10px; padding:14px 16px; font-size:0.85em; color:#333;">
+        <div style="font-size:0.82em; color:#888; margin-bottom:8px;">📋 GitHub の画面イメージ</div>
+
+        <!-- Owner / Repo name -->
+        <div style="margin-bottom:8px;">
+          <div style="font-size:0.8em; color:#555; margin-bottom:3px;">Owner &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Repository name *</div>
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div style="border:1px solid #2da44e; border-radius:6px; padding:4px 8px; background:#f0faf3; color:#2da44e; font-weight:bold; white-space:nowrap; font-size:0.9em;">① Fukiya-AI ▼</div>
+            <span style="color:#888;">/</span>
+            <div style="border:2px solid #E07B39; border-radius:6px; padding:4px 8px; flex:1; color:#888; font-size:0.9em;">② practice-app</div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div style="margin-bottom:8px;">
+          <div style="font-size:0.8em; color:#555; margin-bottom:3px;">Description</div>
+          <div style="border:2px solid #E07B39; border-radius:6px; padding:4px 8px; color:#888; font-size:0.9em;">③ 例）仕入れ請求書を読み込むアプリ</div>
+        </div>
+
+        <!-- Public / Private -->
+        <div style="margin-bottom:8px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:3px; color:#888; font-size:0.9em;">
+            <span>○</span><span>Public</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; padding:5px 8px; background:#fff8f0; border:1px solid #E07B39; border-radius:6px; font-size:0.9em;">
+            <span style="color:#C0460A; font-weight:bold;">●</span>
+            <b style="color:#C0460A;">④ Private</b> &nbsp;<span style="color:#888;">← これを選ぶ</span>
+          </div>
+        </div>
+
+        <!-- Create button -->
+        <div style="background:#2da44e; color:#fff; text-align:center; border-radius:6px; padding:6px; font-weight:bold; font-size:0.92em;">
+          ⑤ Create repository
+        </div>
+      </div>
+    </div>
+
+    <!-- 作成後の画面イメージ -->
+    <div style="margin:14px 0 4px; font-size:0.92em; color:#555; font-weight:bold;">✅ 作成が完了するとこのような画面になります：</div>
+    <div style="background:#fff; border:1px solid #d0d7de; border-radius:10px; overflow:hidden; font-size:0.84em; position:relative;">
+
+      <!-- GitHub風ヘッダー -->
+      <div style="background:#f6f8fa; border-bottom:1px solid #d0d7de; padding:10px 16px; display:flex; align-items:center; gap:8px; color:#555; font-size:0.9em;">
+        <span style="color:#888;">Fukiya-AI</span>
+        <span>/</span>
+        <b style="color:#C0460A;">← ここにあなたがつけた名前が入ります</b>
+        <span style="background:#eee; border:1px solid #ccc; border-radius:10px; font-size:0.8em; padding:1px 8px; margin-left:4px; color:#555;">Private</span>
+      </div>
+
+      <div style="display:flex; gap:0;">
+        <!-- ファイル一覧エリア -->
+        <div style="flex:1; padding:12px 16px; border-right:1px solid #d0d7de;">
+          <div style="display:flex; align-items:center; gap:8px; background:#f6f8fa; border:1px solid #d0d7de; border-radius:6px; padding:8px 12px; margin-bottom:8px; font-size:0.9em; color:#555;">
+            <span>🤖</span> <span>Initial commit</span>
+          </div>
+          <div style="border:1px solid #d0d7de; border-radius:6px; overflow:hidden;">
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #eee; color:#555;">
+              <span>📁 .claude</span><span style="color:#888;">Initial commit</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #eee; color:#555;">
+              <span>📄 .gitignore</span><span style="color:#888;">Initial commit</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:8px 12px; color:#555;">
+              <span>📄 CLAUDE.md</span><span style="color:#888;">Initial commit</span>
+            </div>
+          </div>
+          <div style="margin-top:8px; font-size:0.85em; color:#C0460A; font-weight:bold;">↑ セキュリティファイルが最初から入っています</div>
+        </div>
+
+        <!-- About エリア -->
+        <div style="width:180px; padding:12px 14px; font-size:0.88em;">
+          <div style="font-weight:bold; margin-bottom:6px; color:#333;">About</div>
+          <div style="color:#C0460A; font-weight:bold; margin-bottom:6px;">← ③で入力した説明が表示されます</div>
+          <div style="color:#888; font-size:0.88em;">⭐ 0 stars<br>👁 0 watching<br>🍴 0 forks</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-item" style="margin-top:12px;">
+      <input type="checkbox" id="c4c" onchange="updateProgress()">
+      <label for="c4c">上の画面のように、リポジトリ名・ファイル一覧（.claude / .gitignore / CLAUDE.md）が表示されることを確認する</label>
+    </div>
+
+    <div class="alert-box">
+      <div class="ico">⚠️</div>
+      <div>Ownerで「Fukiya-AI」が選択肢に出ない場合は、GitHubへのログインやOrganization招待の承認が完了していない可能性があります。宮崎に確認してください。</div>
+    </div>
+  </div>
+
+
+  <!-- ======================== PHASE 4 ======================== -->
+  <div class="phase-header">
+    <div class="phase-badge">PHASE 4</div>
+    <div class="phase-title">パソコンにプロジェクトを持ってくる</div>
+    <div class="phase-time">⏱ 約10分</div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div>
+        <div class="step-title">📁 作業フォルダを作って、VS Codeで開く</div>
+        <div class="step-subtitle">GitHubのプロジェクトをパソコンにコピーします</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.92em; color:#555; margin-bottom:10px;">
+      まずターミナルで作業フォルダの準備をします。
+    </p>
+
+    <div class="check-item">
+      <input type="checkbox" id="c5a" onchange="updateProgress()">
+      <label for="c5a">VS Codeのターミナルで以下を入力してデスクトップに移動する</label>
+    </div>
+    <div class="cmd">
+      <span>cd ~/Desktop</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'cd ~/Desktop')">コピー</button>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c5b" onchange="updateProgress()">
+      <label for="c5b">「AIの作業場」フォルダを作成する（すでにある場合はスキップOK）</label>
+    </div>
+    <div class="cmd">
+      <span>mkdir AIの作業場</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'mkdir AIの作業場')">コピー</button>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c5c" onchange="updateProgress()">
+      <label for="c5c">AIの作業場フォルダに移動する</label>
+    </div>
+    <div class="cmd">
+      <span>cd AIの作業場</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'cd AIの作業場')">コピー</button>
+    </div>
+
+    <hr class="divider" style="margin:18px 0;">
+
+    <p style="font-size:0.92em; color:#555; margin-bottom:10px;">
+      次に、ブラウザでGitHubのリポジトリページに戻り、URLをコピーします。
+    </p>
+
+    <!-- Code ボタン → URL コピー：左右レイアウト -->
+    <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:14px;">
+
+      <!-- 左：説明 -->
+      <div style="flex:1; min-width:0;">
+        <div class="check-item" style="border:none; padding:0;">
+          <input type="checkbox" id="c5d" onchange="updateProgress()">
+          <label for="c5d">
+            先ほど作ったGitHubリポジトリのページで、<br>
+            緑の「<b>Code</b>」ボタンをクリック →<br>
+            「<b>HTTPS</b>」タブになっていることを確認して、<br>
+            URLの右の <b>コピーアイコン（📋）</b> をクリックする
+          </label>
+        </div>
+        <div class="point-box" style="margin-top:10px;">
+          <div class="ico">💡</div>
+          <div>コピーアイコンにマウスを乗せると<br>「Copy URL to clipboard」と表示されます</div>
+        </div>
+      </div>
+
+      <!-- 右：モックアップ -->
+      <div style="flex:1; min-width:0; background:#fff; border:1px solid #d0d7de; border-radius:10px; overflow:hidden; font-size:0.82em; color:#333;">
+        <!-- タブ -->
+        <div style="display:flex; border-bottom:1px solid #d0d7de; background:#f6f8fa;">
+          <div style="padding:8px 16px; font-weight:bold; border-bottom:2px solid #fd8c73; color:#333;">Local</div>
+          <div style="padding:8px 16px; color:#888;">Codespaces</div>
+        </div>
+        <div style="padding:12px 14px;">
+          <div style="font-weight:bold; margin-bottom:10px; color:#333; display:flex; align-items:center; gap:6px;">
+            <span style="font-size:1.1em;">⬛</span> Clone
+          </div>
+          <div style="display:flex; gap:12px; border-bottom:1px solid #d0d7de; margin-bottom:10px;">
+            <div style="padding:4px 0; font-weight:bold; border-bottom:2px solid #C0460A; color:#C0460A;">HTTPS</div>
+            <div style="padding:4px 0; color:#888;">SSH</div>
+            <div style="padding:4px 0; color:#888;">GitHub CLI</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:6px; background:#f6f8fa; border:1px solid #d0d7de; border-radius:6px; padding:6px 10px;">
+            <span style="flex:1; color:#555; font-size:0.9em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">https://github.com/Fukiya-AI/...</span>
+            <div style="background:#2da44e; color:#fff; border-radius:5px; padding:3px 8px; cursor:pointer; white-space:nowrap; font-size:0.9em; display:flex; align-items:center; gap:4px;">
+              📋 <span style="font-weight:bold;">← ここ</span>
+            </div>
+          </div>
+          <div style="margin-top:8px; color:#888; font-size:0.88em;">Clone using the web URL.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- git clone：左右レイアウト -->
+    <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:4px;">
+
+      <!-- 左：手順説明 -->
+      <div style="flex:1; min-width:0;">
+        <div class="check-item" style="border:none; padding:0; margin-bottom:10px;">
+          <input type="checkbox" id="c5e" onchange="updateProgress()">
+          <label for="c5e">ターミナルに戻り、<b>3ステップ</b>でコマンドを実行する</label>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">①</div>
+          <div><b>git clone </b> と手で入力する<br>
+          <span style="color:#C0460A; font-size:0.88em; font-weight:bold;">最後に半角スペースを忘れずに！</span></div>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">②</div>
+          <div><span class="kbd">Ctrl</span>+<span class="kbd">V</span> を押す<br>
+          <span style="color:#888; font-size:0.88em;">コピーしたURLが貼り付けられます</span></div>
+        </div>
+        <div class="github-step">
+          <div class="num">③</div>
+          <div><span class="kbd">Enter</span> を押して実行する</div>
+        </div>
+      </div>
+
+      <!-- 右：ターミナルのイメージ -->
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:0.82em; color:#888; margin-bottom:6px;">📟 ターミナルのイメージ</div>
+        <div style="background:#1E1E1E; border-radius:10px; padding:14px 16px; font-family:'Courier New',monospace; font-size:0.85em;">
+          <div style="color:#888; margin-bottom:8px;">PS C:\Users\...\AIの作業場&gt;</div>
+          <div style="display:flex; align-items:center; gap:0; flex-wrap:wrap; line-height:1.8;">
+            <span style="color:#F0C080;">git clone&nbsp;</span><span style="color:#7EC8E3;">https://github.com/Fukiya-AI/practice-app.git</span>
+          </div>
+          <div style="margin-top:4px; color:#888; font-size:0.88em;">
+            ← ①手打ち &nbsp;← ②Ctrl+Vで貼り付け
+          </div>
+        </div>
+        <div style="background:#1E1E1E; border-radius:8px; padding:10px 16px; margin-top:8px; font-family:'Courier New',monospace; font-size:0.82em; color:#6A9955;">
+          Cloning into 'practice-app'...<br>
+          remote: Counting objects...<br>
+          ✅ 完了！
+        </div>
+      </div>
+    </div>
+
+    <div class="alert-box" style="margin-top:10px;">
+      <div class="ico">⚠️</div>
+      <div>初回はGitHubのログイン画面がブラウザで開くことがあります。その場合はブラウザで承認してから、もう一度実行してください。</div>
+    </div>
+
+    <div class="point-box" style="margin-bottom:10px;">
+      <div class="ico">📦</div>
+      <div><b>「クローン」とは？</b><br>
+      GitHubにあるプロジェクトを、自分のパソコンにまるごとコピーしてくることです。<br>
+      コピーが完了すると、<b>デスクトップの「AIの作業場」フォルダの中</b>に、リポジトリ名と同じフォルダが自動で作られます。</div>
+    </div>
+
+    <!-- クローン確認：左右レイアウト -->
+    <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:4px;">
+      <div style="flex:1; min-width:0;">
+        <div class="check-item" style="border:none; padding:0;">
+          <input type="checkbox" id="c5f" onchange="updateProgress()">
+          <label for="c5f">エクスプローラーで <b>デスクトップ → AIの作業場</b> を開き、自分がつけたリポジトリ名のフォルダができていることを確認する</label>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:0.82em; color:#888; margin-bottom:6px;">📁 フォルダのイメージ</div>
+        <div style="background:#f6f8fa; border:1px solid #d0d7de; border-radius:10px; padding:12px 14px; font-size:0.88em; color:#333;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span>🖥️</span><span>デスクトップ</span>
+          </div>
+          <div style="margin-left:20px; border-left:2px solid #d0d7de; padding-left:10px; margin-bottom:4px;">
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+              <span>📁</span><span style="font-weight:bold;">AIの作業場</span>
+            </div>
+            <div style="margin-left:20px; border-left:2px solid #d0d7de; padding-left:10px;">
+              <div style="display:flex; align-items:center; gap:8px; background:#fff8f0; border:1px solid #E07B39; border-radius:6px; padding:5px 10px;">
+                <span>📁</span>
+                <span style="font-weight:bold; color:#C0460A;">practice-app</span>
+                <span style="color:#C0460A; font-size:0.85em;">← ここに出来ます！</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c5g" onchange="updateProgress()">
+      <label for="c5g">プロジェクトフォルダに移動する（フォルダ名はリポジトリ名と同じ）<br>
+      <span style="color:#888; font-size:0.88em;">例）practice-app というリポジトリ名にした場合：cd practice-app</span></label>
+    </div>
+    <div class="cmd" style="flex-direction:column; align-items:flex-start; gap:4px;">
+      <span>cd <span style="color:#aaa;">（リポジトリ名）</span></span>
+      <span style="color:#888; font-size:0.82em;">例）cd practice-app</span>
+    </div>
+
+    <!-- フォルダ単位の概念説明 -->
+    <div style="background:#FFF3CD; border:1.5px solid #FFCA28; border-radius:12px; padding:16px 18px; margin:12px 0;">
+      <div style="font-weight:bold; color:#7A5700; margin-bottom:8px; font-size:0.95em;">📂 VS Codeの大切なルール：「フォルダ単位で開く」</div>
+      <div style="font-size:0.9em; color:#5A4000; line-height:1.7;">
+        VS Codeは <b>フォルダ（＝プロジェクト）ごとに開いて作業</b> します。<br>
+        ファイルを1個だけ開いてもClaude Codeはプロジェクト全体を認識できません。<br><br>
+        <b>今後、アプリを修正・開発するときの作業の始め方：</b><br>
+        VS Codeを起動 → <b>「ファイル」→「フォルダーを開く」</b> → 作業したいフォルダを選ぶ<br>
+        この手順を毎回繰り返します。
+      </div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c5h" onchange="updateProgress()">
+      <label for="c5h">VS Codeのメニューから <b>「ファイル」→「フォルダーを開く」</b> を選ぶ</label>
+    </div>
+
+    <!-- 左右レイアウト：操作説明 + メニューイメージ -->
+    <div style="display:flex; gap:20px; align-items:flex-start; margin:10px 0 4px;">
+      <div style="flex:1; min-width:0;">
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">①</div>
+          <div>VS Code左上の <b>「ファイル」</b> をクリック</div>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">②</div>
+          <div><b>「フォルダーを開く」</b> をクリック</div>
+        </div>
+        <div class="github-step" style="margin-bottom:6px;">
+          <div class="num">③</div>
+          <div>デスクトップ → <b>AIの作業場</b> → <b>リポジトリ名のフォルダ</b> を選んで「フォルダーの選択」をクリック</div>
+        </div>
+        <div class="github-step">
+          <div class="num">④</div>
+          <div>「このフォルダの作成者を信頼しますか？」と聞かれたら<b>「はい、作成者を信頼します」</b>をクリック</div>
+        </div>
+      </div>
+      <div style="flex:1; min-width:0;">
+        <div style="font-size:0.82em; color:#888; margin-bottom:6px;">📋 VS Codeメニューのイメージ</div>
+        <div style="background:#2D2D2D; border-radius:8px 8px 0 0; padding:6px 14px; display:flex; gap:16px; color:#ccc; font-size:0.88em; align-items:center;">
+          <span style="color:#F0C080; font-weight:bold; background:#094771; padding:2px 8px; border-radius:4px; border:1px solid #F0C080;">ファイル ←</span>
+          <span>編集</span><span>選択</span><span>表示</span><span>…</span>
+        </div>
+        <div style="background:#252526; border:1px solid #555; border-radius:0 0 8px 8px; padding:6px 0; font-size:0.88em;">
+          <div style="padding:7px 20px; color:#888;">新しいファイル</div>
+          <div style="padding:7px 20px; color:#888;">新しいウィンドウ</div>
+          <div style="border-top:1px solid #444; margin:4px 0;"></div>
+          <div style="padding:7px 20px; color:#F0C080; font-weight:bold; background:#094771;">フォルダーを開く… 👈②</div>
+          <div style="padding:7px 20px; color:#888;">最近使用したファイルを開く</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="point-box" style="margin-top:10px;">
+      <div class="ico">💡</div>
+      <div>左側のファイル一覧に <b>CLAUDE.md・.gitignore</b> などが表示されたら正しく開けています。<br>
+      次回からも「ファイル→フォルダーを開く」でこのフォルダを選べばOKです。</div>
+    </div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c5i" onchange="updateProgress()">
+      <label for="c5i">左側のファイル一覧に <b>CLAUDE.md</b>・<b>.gitignore</b> などが表示されていることを確認する<br>
+      <span style="color:#888; font-size:0.88em;">表示されていれば、VS Codeがプロジェクト全体を認識できている状態です</span></label>
+    </div>
+  </div>
+
+
+  <!-- ======================== PHASE 5 ======================== -->
+  <div class="phase-header">
+    <div class="phase-badge">PHASE 5</div>
+    <div class="phase-title">Claude Codeと話してみる</div>
+    <div class="phase-time">⏱ 約10分</div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">6</div>
+      <div>
+        <div class="step-title">🤖 Claude Codeに話しかけて動作確認する</div>
+        <div class="step-subtitle">日本語でそのまま話しかけるだけでOKです</div>
+      </div>
+    </div>
+
+    <!-- サイドバー説明：左右レイアウト -->
+    <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:4px;">
+      <div style="flex:1; min-width:0;">
+        <div class="check-item" style="border:none; padding:0;">
+          <input type="checkbox" id="c6a" onchange="updateProgress()">
+          <label for="c6a">VS Code <b>左サイドバーの一番下にある Claudeアイコン（✳）</b> をクリックする<br>
+          <span style="color:#888; font-size:0.88em;">テーマの色によって白・グレーに見えることがあります</span></label>
+        </div>
+      </div>
+      <!-- 右：サイドバーモックアップ -->
+      <div style="flex:0 0 auto; width:180px;">
+        <div style="font-size:0.82em; color:#888; margin-bottom:6px;">📋 サイドバーのイメージ</div>
+        <div style="background:#252526; border-radius:10px; padding:10px 0; display:flex; flex-direction:column; align-items:center; gap:2px; width:56px;">
+          <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#858585; font-size:1.3em;" title="エクスプローラー">📄</div>
+          <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#858585; font-size:1.3em;" title="検索">🔍</div>
+          <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#858585; font-size:1.3em;" title="ソース管理">⑂</div>
+          <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; color:#858585; font-size:1.3em;" title="拡張機能">⊞</div>
+          <div style="margin-top:6px; border-top:1px solid #444; width:36px;"></div>
+          <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; border-radius:8px; background:#094771; border:1.5px solid #F0C080; color:#F0C080; font-size:1.4em; font-weight:bold; margin-top:4px;" title="Claude Code">✳</div>
+          <div style="color:#F0C080; font-size:0.72em; text-align:center; margin-top:2px; line-height:1.3;">← ここ</div>
+        </div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c6b" onchange="updateProgress()">
+      <label for="c6b">チャット入力欄に以下をそのまま入力してEnterを押す</label>
+    </div>
+
+    <div class="input-sample">こんにちは！今日からClaude Codeを使ってアプリ開発を始めます。
+このフォルダにはどんなファイルがありますか？</div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c6c" onchange="updateProgress()">
+      <label for="c6c">Claudeがフォルダ内のファイル（CLAUDE.md など）を説明してくれることを確認する</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c6d" onchange="updateProgress()">
+      <label for="c6d">今度は以下を入力してみる</label>
+    </div>
+
+    <div class="input-sample">CLAUDE.mdの内容を見て、このプロジェクトにどんなルールが設定されているか教えてください。</div>
+
+    <div class="check-item">
+      <input type="checkbox" id="c6e" onchange="updateProgress()">
+      <label for="c6e">Claudeがルール（削除禁止・日本語で返答・個人情報保護など）を説明してくれることを確認する</label>
+    </div>
+
+    <div class="point-box">
+      <div class="ico">💡</div>
+      <div>
+        <b>Claude Codeはフォルダの中身を読みながら返答してくれます。</b><br>
+        今開いているフォルダ（プロジェクト）の状況を理解した上で答えてくれるので、<br>
+        「このファイルを修正して」「こういう機能を追加して」と日本語で頼むだけでコードを書いてくれます。
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7（おまけ体験） -->
+  <div class="step-card" style="border-left-color:#5B8C5A;">
+    <div class="step-header">
+      <div class="step-number" style="background:#5B8C5A;">+</div>
+      <div>
+        <div class="step-title">💬 自由に話しかけてみよう（体験タイム）</div>
+        <div class="step-subtitle">何でも聞いてOKです。AIに慣れましょう</div>
+      </div>
+    </div>
+
+    <p style="font-size:0.93em; color:#555; margin-bottom:14px;">
+      例えば、こんなことを聞いてみましょう：
+    </p>
+
+    <div class="input-sample">Streamlitというのはどういうものか、初心者にわかりやすく説明してください。</div>
+    <div class="input-sample" style="margin-top:8px;">私は仕入れ部門で働いています。AIを使ってどんな業務が効率化できますか？</div>
+    <div class="input-sample" style="margin-top:8px;">Pythonって何ですか？プログラミング初心者でも使えますか？</div>
+
+    <div class="point-box" style="margin-top:14px;">
+      <div class="ico">🎯</div>
+      <div>
+        <b>ポイント：「失敗してもいい」環境です。</b><br>
+        Claude Codeは何度でも聞き直せます。わからないことは「もっとやさしく教えて」と言えば言い直してくれます。<br>
+        まずはAIと「話す」感覚をつかみましょう。
+      </div>
+    </div>
+  </div>
+
+  <!-- 完了バナー -->
+  <div class="finish-banner" id="completeMsg" style="display:none;">
+    <h2>🎉 セットアップ完了！</h2>
+    <p>環境が整いました。<br>
+    いよいよ、実際のアプリを作り始めましょう！</p>
+  </div>
+
+  <div class="finish-banner" style="margin-top:32px; background:linear-gradient(135deg,#3B6A9A,#5B8FD0);">
+    <h2>✅ 準備完了！</h2>
+    <p>ここまでできたら、セットアップはすべて終わりです。<br><br>
+    <b>では、実際のアプリを作り始めましょう！</b></p>
+  </div>
+
+</div>
+
+<div class="footer">
+  富喜屋 社内AI勉強会 実践ガイド（セットアップ編）
+</div>
+
+<script>
+  const stepCheckMap = {
+    '1': ['c1a','c1b','c1c','c1d'],
+    '2': ['c2a','c2b','c2c','c2d'],
+    '3': ['c3a','c3b','c3c'],
+    '4': ['c4a','c4b','c4c'],
+    '5': ['c5a','c5b','c5c','c5d','c5e','c5f','c5g','c5h','c5i'],
+  };
+  const totalSteps = Object.keys(stepCheckMap).length;
+
+  function updateProgress() {
+    let completedSteps = 0;
+    for (const [step, ids] of Object.entries(stepCheckMap)) {
+      if (ids.every(id => document.getElementById(id)?.checked)) {
+        completedSteps++;
+      }
+    }
+    const pct = Math.round((completedSteps / totalSteps) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').textContent = completedSteps + ' / ' + totalSteps + ' 完了';
+    const msg = document.getElementById('completeMsg');
+    if (msg) msg.style.display = completedSteps === totalSteps ? 'block' : 'none';
+  }
+
+  function copyCmd(btn, text) {
+    navigator.clipboard.writeText(text).then(() => {
+      const orig = btn.textContent;
+      btn.textContent = 'コピー完了!';
+      setTimeout(() => btn.textContent = orig, 1500);
+    });
+  }
+</script>
+</body>
+</html>
