@@ -533,7 +533,7 @@
     </div>
     <div class="cmd">
       <span>python --version</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'python --version')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this,'python --version')">コピーする</button>
     </div>
 
     <div class="check-item">
@@ -542,7 +542,7 @@
     </div>
     <div class="cmd">
       <span>streamlit --version</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'streamlit --version')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this,'streamlit --version')">コピーする</button>
     </div>
 
     <div class="alert-box">
@@ -594,7 +594,7 @@
     </div>
     <div class="cmd">
       <span>git config --global --list</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'git config --global --list')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this,'git config --global --list')">コピーする</button>
     </div>
 
     <div class="point-box">
@@ -613,7 +613,7 @@
       </div>
       <div class="cmd">
         <span>printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" &gt; ~/.gitignore_global</span>
-        <button class="cmd-copy" data-cmd='printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" > ~/.gitignore_global' onclick="copyCmd(this, this.dataset.cmd)">コピー</button>
+        <button class="cmd-copy" data-cmd='printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" > ~/.gitignore_global' onclick="copyCmd(this, this.dataset.cmd)">コピーする</button>
       </div>
 
       <div class="check-item">
@@ -622,7 +622,7 @@
       </div>
       <div class="cmd">
         <span>git config --global core.excludesfile ~/.gitignore_global</span>
-        <button class="cmd-copy" onclick="copyCmd(this,'git config --global core.excludesfile ~/.gitignore_global')">コピー</button>
+        <button class="cmd-copy" onclick="copyCmd(this,'git config --global core.excludesfile ~/.gitignore_global')">コピーする</button>
       </div>
 
       <div class="check-item">
@@ -631,7 +631,7 @@
       </div>
       <div class="cmd">
         <span>git config --global core.excludesfile</span>
-        <button class="cmd-copy" onclick="copyCmd(this,'git config --global core.excludesfile')">コピー</button>
+        <button class="cmd-copy" onclick="copyCmd(this,'git config --global core.excludesfile')">コピーする</button>
       </div>
 
       <div class="point-box" style="margin-top:12px;">
@@ -666,7 +666,7 @@
     </div>
     <div class="url-box" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
       <span>🔗 https://github.com/Fukiya-AI/project-template</span>
-      <button class="cmd-copy" style="background:#5B8FD0; color:#fff; border:none; padding:4px 14px; border-radius:6px; cursor:pointer; font-size:0.82em; white-space:nowrap;" onclick="copyCmd(this,'https://github.com/Fukiya-AI/project-template')">コピー</button>
+      <button class="cmd-copy" style="background:#5B8FD0; color:#fff; border:none; padding:4px 14px; border-radius:6px; cursor:pointer; font-size:0.82em; white-space:nowrap;" onclick="copyCmd(this,'https://github.com/Fukiya-AI/project-template')">コピーする</button>
     </div>
 
     <div class="check-item">
@@ -810,7 +810,7 @@
       <div class="step-number">5</div>
       <div>
         <div class="step-title">📁 作業フォルダを作って、VS Codeで開く</div>
-        <div class="step-subtitle">GitHubのプロジェクトをパソコンにコピーします</div>
+        <div class="step-subtitle">GitHubのプロジェクトをパソコンにコピーするします</div>
       </div>
     </div>
 
@@ -824,7 +824,7 @@
     </div>
     <div class="cmd">
       <span>cd ~/Desktop</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'cd ~/Desktop')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this,'cd ~/Desktop')">コピーする</button>
     </div>
 
     <div class="check-item">
@@ -833,7 +833,7 @@
     </div>
     <div class="cmd">
       <span>mkdir AIの作業場</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'mkdir AIの作業場')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this,'mkdir AIの作業場')">コピーする</button>
     </div>
 
     <div class="check-item">
@@ -842,16 +842,16 @@
     </div>
     <div class="cmd">
       <span>cd AIの作業場</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'cd AIの作業場')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this,'cd AIの作業場')">コピーする</button>
     </div>
 
     <hr class="divider" style="margin:18px 0;">
 
     <p style="font-size:0.92em; color:#555; margin-bottom:10px;">
-      次に、ブラウザでGitHubのリポジトリページに戻り、URLをコピーします。
+      次に、ブラウザでGitHubのリポジトリページに戻り、URLをコピーするします。
     </p>
 
-    <!-- Code ボタン → URL コピー：左右レイアウト -->
+    <!-- Code ボタン → URL コピーする：左右レイアウト -->
     <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:14px;">
 
       <!-- 左：説明 -->
@@ -862,12 +862,12 @@
             先ほど作ったGitHubリポジトリのページで、<br>
             緑の「<b>Code</b>」ボタンをクリック →<br>
             「<b>HTTPS</b>」タブになっていることを確認して、<br>
-            URLの右の <b>コピーアイコン（📋）</b> をクリックする
+            URLの右の <b>コピーするアイコン（📋）</b> をクリックする
           </label>
         </div>
         <div class="point-box" style="margin-top:10px;">
           <div class="ico">💡</div>
-          <div>コピーアイコンにマウスを乗せると<br>「Copy URL to clipboard」と表示されます</div>
+          <div>コピーするアイコンにマウスを乗せると<br>「Copy URL to clipboard」と表示されます</div>
         </div>
       </div>
 
@@ -915,7 +915,7 @@
         <div class="github-step" style="margin-bottom:6px;">
           <div class="num">②</div>
           <div><span class="kbd">Ctrl</span>+<span class="kbd">V</span> を押す<br>
-          <span style="color:#888; font-size:0.88em;">コピーしたURLが貼り付けられます</span></div>
+          <span style="color:#888; font-size:0.88em;">コピーするしたURLが貼り付けられます</span></div>
         </div>
         <div class="github-step">
           <div class="num">③</div>
@@ -951,8 +951,8 @@
     <div class="point-box" style="margin-bottom:10px;">
       <div class="ico">📦</div>
       <div><b>「クローン」とは？</b><br>
-      GitHubにあるプロジェクトを、自分のパソコンにまるごとコピーしてくることです。<br>
-      コピーが完了すると、<b>デスクトップの「AIの作業場」フォルダの中</b>に、リポジトリ名と同じフォルダが自動で作られます。</div>
+      GitHubにあるプロジェクトを、自分のパソコンにまるごとコピーするしてくることです。<br>
+      コピーするが完了すると、<b>デスクトップの「AIの作業場」フォルダの中</b>に、リポジトリ名と同じフォルダが自動で作られます。</div>
     </div>
 
     <!-- クローン確認：左右レイアウト -->
@@ -1210,7 +1210,7 @@
   function copyCmd(btn, text) {
     navigator.clipboard.writeText(text).then(() => {
       const orig = btn.textContent;
-      btn.textContent = 'コピー完了!';
+      btn.textContent = 'コピーする完了!';
       setTimeout(() => btn.textContent = orig, 1500);
     });
   }

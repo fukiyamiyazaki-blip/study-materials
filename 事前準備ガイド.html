@@ -471,7 +471,7 @@
     </div>
     <div class="cmd">
       <span>pip install streamlit</span>
-      <button class="cmd-copy" onclick="copyCmd(this, 'pip install streamlit')">コピー</button>
+      <button class="cmd-copy" onclick="copyCmd(this, 'pip install streamlit')">コピーする</button>
     </div>
     <div class="check-item">
       <input type="checkbox" id="c6d" onchange="updateProgress()">
@@ -568,7 +568,7 @@
   function copyCmd(btn, text) {
     navigator.clipboard.writeText(text).then(() => {
       const orig = btn.textContent;
-      btn.textContent = 'コピー完了!';
+      btn.textContent = 'コピーしました!';
       setTimeout(() => btn.textContent = orig, 1500);
     });
   }
