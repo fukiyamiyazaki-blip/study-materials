@@ -613,7 +613,7 @@
       </div>
       <div class="cmd">
         <span>printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" &gt; ~/.gitignore_global</span>
-        <button class="cmd-copy" onclick="copyCmd(this,'printf \".env\\n.env.*\\nsecrets.toml\\n.streamlit/secrets.toml\\n\" > ~/.gitignore_global')">コピー</button>
+        <button class="cmd-copy" data-cmd='printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" > ~/.gitignore_global' onclick="copyCmd(this, this.dataset.cmd)">コピー</button>
       </div>
 
       <div class="check-item">
