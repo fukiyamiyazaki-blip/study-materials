@@ -565,7 +565,7 @@
     <div class="step-header">
       <div class="step-number">3</div>
       <div>
-        <div class="step-title">⚙️ あなたの名前とメールをGitに登録する</div>
+        <div class="step-title">⚙️ あなたの名前・メール・セキュリティをGitに登録する</div>
         <div class="step-subtitle">GitHubに「誰が変更したか」を記録するための設定です（初回のみ）</div>
       </div>
     </div>
@@ -601,6 +601,44 @@
       <div class="ico">💡</div>
       <div>この設定はパソコンに1回だけ行えばOKです。<br>
       次回からは設定不要です。</div>
+    </div>
+
+    <!-- セキュリティ設定 -->
+    <div style="margin-top:18px; padding-top:18px; border-top:1px dashed #E0C8B0;">
+      <div style="font-size:0.92em; font-weight:bold; color:#C0460A; margin-bottom:12px;">🔒 セキュリティ設定（パスワードなどが誤って公開されないようにする）</div>
+
+      <div class="check-item">
+        <input type="checkbox" id="c3d" onchange="updateProgress()">
+        <label for="c3d">以下を入力する（<b>.envなど秘密ファイルを全リポジトリで自動除外する設定</b>）</label>
+      </div>
+      <div class="cmd">
+        <span>printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" &gt; ~/.gitignore_global</span>
+        <button class="cmd-copy" onclick="copyCmd(this,'printf \".env\\n.env.*\\nsecrets.toml\\n.streamlit/secrets.toml\\n\" > ~/.gitignore_global')">コピー</button>
+      </div>
+
+      <div class="check-item">
+        <input type="checkbox" id="c3e" onchange="updateProgress()">
+        <label for="c3e">以下を入力してGitに登録する</label>
+      </div>
+      <div class="cmd">
+        <span>git config --global core.excludesfile ~/.gitignore_global</span>
+        <button class="cmd-copy" onclick="copyCmd(this,'git config --global core.excludesfile ~/.gitignore_global')">コピー</button>
+      </div>
+
+      <div class="check-item">
+        <input type="checkbox" id="c3f" onchange="updateProgress()">
+        <label for="c3f">以下を入力して確認する（<b>ファイルのパスが表示されればOK</b>）</label>
+      </div>
+      <div class="cmd">
+        <span>git config --global core.excludesfile</span>
+        <button class="cmd-copy" onclick="copyCmd(this,'git config --global core.excludesfile')">コピー</button>
+      </div>
+
+      <div class="point-box" style="margin-top:12px;">
+        <div class="ico">🛡️</div>
+        <div>これを設定しておくと、テンプレートを使い忘れても<b>パスワードやAPIキーが誤ってGitHubに公開されることを防げます。</b><br>
+        パソコンに1回だけ設定すれば、今後すべてのプロジェクトで自動的に適用されます。</div>
+      </div>
     </div>
   </div>
 
@@ -1149,7 +1187,7 @@
   const stepCheckMap = {
     '1': ['c1a','c1b','c1c','c1d'],
     '2': ['c2a','c2b','c2c','c2d'],
-    '3': ['c3a','c3b','c3c'],
+    '3': ['c3a','c3b','c3c','c3d','c3e','c3f'],
     '4': ['c4a','c4b','c4c'],
     '5': ['c5a','c5b','c5c','c5d','c5e','c5f','c5g','c5h','c5i'],
   };
