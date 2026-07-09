@@ -575,7 +575,10 @@
       <label for="c3a">ターミナルで以下を入力する（<b>「あなたの名前」を自分の名前に変えて</b>から実行）</label>
     </div>
     <div class="cmd" style="flex-direction:column; align-items:flex-start; gap:6px;">
-      <span>git config --global user.name "<span style="background:#F0C080; color:#2D2D2D; padding:0 4px; border-radius:3px;">ここに自分の名前</span>"</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
+        <span>git config --global user.name "<span style="background:#F0C080; color:#2D2D2D; padding:0 4px; border-radius:3px;">ここに自分の名前</span>"</span>
+        <button class="cmd-copy" data-cmd='git config --global user.name "ここに自分の名前"' onclick="copyCmd(this, this.dataset.cmd)">コピーする</button>
+      </div>
       <span style="color:#888; font-size:0.82em;">例）git config --global user.name "Miyazaki Hiroo"</span>
     </div>
 
@@ -584,7 +587,10 @@
       <label for="c3b">以下を入力する（<b>「メールアドレス」をGitHubに登録した会社のメールに変えて</b>から実行）</label>
     </div>
     <div class="cmd" style="flex-direction:column; align-items:flex-start; gap:6px;">
-      <span>git config --global user.email "<span style="background:#F0C080; color:#2D2D2D; padding:0 4px; border-radius:3px;">ここにメールアドレス</span>"</span>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
+        <span>git config --global user.email "<span style="background:#F0C080; color:#2D2D2D; padding:0 4px; border-radius:3px;">ここにメールアドレス</span>"</span>
+        <button class="cmd-copy" data-cmd='git config --global user.email "ここにメールアドレス"' onclick="copyCmd(this, this.dataset.cmd)">コピーする</button>
+      </div>
       <span style="color:#888; font-size:0.82em;">例）git config --global user.email "yamada@fukiya-meals.co.jp"</span>
     </div>
 
