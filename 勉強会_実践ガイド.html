@@ -839,8 +839,12 @@
       <label for="c5a">VS Codeのターミナルで以下を入力してデスクトップに移動する</label>
     </div>
     <div class="cmd">
-      <span>cd ~/Desktop</span>
-      <button class="cmd-copy" onclick="copyCmd(this,'cd ~/Desktop')">コピーする</button>
+      <span>cd ([Environment]::GetFolderPath("Desktop"))</span>
+      <button class="cmd-copy" onclick='copyCmd(this,"cd ([Environment]::GetFolderPath(\"Desktop\"))")'>コピーする</button>
+    </div>
+    <div class="alert-box" style="margin-top:8px;">
+      <div class="ico">⚠️</div>
+      <div>「パスが存在しません」というエラーが出る場合、OneDriveでデスクトップが同期・移動されている可能性があります。上のコマンドはその場合でも正しい場所を自動で見つけます。</div>
     </div>
 
     <div class="check-item">
