@@ -372,21 +372,64 @@
     <div class="step-header">
       <div class="step-number">4</div>
       <div>
+        <div class="step-title">🔧 Gitをインストールする</div>
+        <div class="step-subtitle">パソコンでGitHubと連携するために必要なプログラムです</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4a" onchange="updateProgress()">
+      <label for="c4a">以下のURLにアクセスする</label>
+    </div>
+    <div class="url-box">🔗 https://git-scm.com/download/win</div>
+    <div class="check-item">
+      <input type="checkbox" id="c4b" onchange="updateProgress()">
+      <label for="c4b">自動的にダウンロードが始まる(始まらない場合は「click here to download manually」をクリック)</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4c" onchange="updateProgress()">
+      <label for="c4c">ダウンロードしたファイルを開いてインストールする<br>
+      <span style="color:#888; font-size:0.9em;">すべて設定はそのままで「Next」→「Install」で進めてOKです</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4d" onchange="updateProgress()">
+      <label for="c4d">VS Codeを再起動する<br>
+      <span style="color:#888; font-size:0.9em;">先にVS Codeを開いていた場合は、一度閉じて開き直してください</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c4e" onchange="updateProgress()">
+      <label for="c4e">VS Codeのターミナルで以下を入力し、バージョンが表示されることを確認する</label>
+    </div>
+    <div class="cmd">
+      <span>git --version</span>
+      <button class="cmd-copy" onclick="copyCmd(this, 'git --version')">コピーする</button>
+    </div>
+    <div class="point-box">
+      <div class="ai">💡</div>
+      <div>「git version 2.xx.x」のように表示されればインストール成功です。<br>
+      「認識されません」と出る場合は、VS Codeを再起動してもう一度試してください。</div>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">5</div>
+      <div>
         <div class="step-title">🤖 Claude Code をインストールする</div>
         <div class="step-subtitle">VS Codeに追加するだけで、AIと話しながらアプリが作れます</div>
       </div>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c4a" onchange="updateProgress()">
-      <label for="c4a">VS Codeを開く</label>
+      <input type="checkbox" id="c5a" onchange="updateProgress()">
+      <label for="c5a">VS Codeを開く</label>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c4b" onchange="updateProgress()">
-      <label for="c4b">左側のバーにある「四角が4つ」のアイコン（拡張機能）をクリックする</label>
+      <input type="checkbox" id="c5b" onchange="updateProgress()">
+      <label for="c5b">左側のバーにある「四角が4つ」のアイコン（拡張機能）をクリックする</label>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c4c" onchange="updateProgress()">
-      <label for="c4c">検索欄に「<b>Claude Code</b>」と入力して検索する</label>
+      <input type="checkbox" id="c5c" onchange="updateProgress()">
+      <label for="c5c">検索欄に「<b>Claude Code</b>」と入力して検索する</label>
     </div>
     <div class="alert-box" style="margin-bottom:12px;">
       <div class="ai">⚠️</div>
@@ -394,8 +437,8 @@
       正しいものは、アイコンが <b style="color:#C0460A;">オレンジ色の「&lt;&gt;」マーク</b> で、作者欄に <b>Anthropic</b> と書いてあります。</div>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c4d" onchange="updateProgress()">
-      <label for="c4d">
+      <input type="checkbox" id="c5d" onchange="updateProgress()">
+      <label for="c5d">
         <b>オレンジ色のアイコン</b>の「Claude Code」（作者：<b>Anthropic</b>）を選んで「インストール」をクリックする<br>
         <span style="display:inline-block; margin-top:6px; background:#2D2D2D; color:#F0C080; border-radius:6px; padding:4px 12px; font-size:0.88em; font-family:monospace;">
           🟠 Claude Code &nbsp; — &nbsp; Anthropic
@@ -403,8 +446,8 @@
       </label>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c4e" onchange="updateProgress()">
-      <label for="c4e">VS Codeの左側または下部に <b>オレンジ色のClaudeアイコン</b> が追加されることを確認する</label>
+      <input type="checkbox" id="c5e" onchange="updateProgress()">
+      <label for="c5e">VS Codeの左側または下部に <b>オレンジ色のClaudeアイコン</b> が追加されることを確認する</label>
     </div>
     <div class="point-box">
       <div class="ai">💡</div>
@@ -414,27 +457,27 @@
     </div>
   </div>
 
-  <!-- STEP 5 -->
+  <!-- STEP 6 -->
   <div class="step-card">
     <div class="step-header">
-      <div class="step-number">5</div>
+      <div class="step-number">6</div>
       <div>
         <div class="step-title">🐍 Pythonをインストールする</div>
         <div class="step-subtitle">アプリを動かすために必要なプログラムです</div>
       </div>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c5a" onchange="updateProgress()">
-      <label for="c5a">以下のURLにアクセスする</label>
+      <input type="checkbox" id="c6a" onchange="updateProgress()">
+      <label for="c6a">以下のURLにアクセスする</label>
     </div>
     <div class="url-box">🔗 https://www.python.org/downloads/</div>
     <div class="check-item">
-      <input type="checkbox" id="c5b" onchange="updateProgress()">
-      <label for="c5b">「Download Python 3.xx.x」の黄色いボタンをクリックしてダウンロードする</label>
+      <input type="checkbox" id="c6b" onchange="updateProgress()">
+      <label for="c6b">「Download Python 3.xx.x」の黄色いボタンをクリックしてダウンロードする</label>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c5c" onchange="updateProgress()">
-      <label for="c5c">ダウンロードしたファイルを開く</label>
+      <input type="checkbox" id="c6c" onchange="updateProgress()">
+      <label for="c6c">ダウンロードしたファイルを開く</label>
     </div>
     <div class="alert-box">
       <div class="ai">⚠️</div>
@@ -442,49 +485,12 @@
       これを忘れると次のステップができません。チェックを入れてから「Install Now」をクリック。</div>
     </div>
     <div class="check-item" style="margin-top:12px;">
-      <input type="checkbox" id="c5d" onchange="updateProgress()">
-      <label for="c5d">「Add Python to PATH」にチェックを入れてからインストールした</label>
-    </div>
-    <div class="check-item">
-      <input type="checkbox" id="c5e" onchange="updateProgress()">
-      <label for="c5e">「Setup was successful」と表示されてインストール完了した</label>
-    </div>
-  </div>
-
-  <!-- STEP 6 -->
-  <div class="step-card">
-    <div class="step-header">
-      <div class="step-number">6</div>
-      <div>
-        <div class="step-title">🌐 Streamlitをインストールする</div>
-        <div class="step-subtitle">アプリを作るための部品です（コマンドを1行入力するだけ）</div>
-      </div>
-    </div>
-    <div class="check-item">
-      <input type="checkbox" id="c6a" onchange="updateProgress()">
-      <label for="c6a">キーボードの「Windowsキー」を押しながら「R」を押す<br>
-      <span style="color:#888; font-size:0.9em;">小さい「ファイル名を指定して実行」という画面が出てきます</span></label>
-    </div>
-    <div class="check-item">
-      <input type="checkbox" id="c6b" onchange="updateProgress()">
-      <label for="c6b">「<b>cmd</b>」と入力してEnterを押す（黒い画面が開きます）</label>
-    </div>
-    <div class="check-item">
-      <input type="checkbox" id="c6c" onchange="updateProgress()">
-      <label for="c6c">黒い画面に以下をそのままコピペしてEnterを押す</label>
-    </div>
-    <div class="cmd">
-      <span>pip install streamlit</span>
-      <button class="cmd-copy" onclick="copyCmd(this, 'pip install streamlit')">コピーする</button>
-    </div>
-    <div class="check-item">
       <input type="checkbox" id="c6d" onchange="updateProgress()">
-      <label for="c6d">しばらく待ってインストールが完了した（「Successfully installed」と表示される）</label>
+      <label for="c6d">「Add Python to PATH」にチェックを入れてからインストールした</label>
     </div>
-    <div class="point-box">
-      <div class="ai">💡</div>
-      <div>インストール中は黒い画面にいろんな文字が流れますが、正常です。<br>
-      止まるまでそのままお待ちください（1〜3分程度）。</div>
+    <div class="check-item">
+      <input type="checkbox" id="c6e" onchange="updateProgress()">
+      <label for="c6e">「Setup was successful」と表示されてインストール完了した</label>
     </div>
   </div>
 
@@ -493,21 +499,58 @@
     <div class="step-header">
       <div class="step-number">7</div>
       <div>
+        <div class="step-title">🌐 Streamlitをインストールする</div>
+        <div class="step-subtitle">アプリを作るための部品です（コマンドを1行入力するだけ）</div>
+      </div>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7a" onchange="updateProgress()">
+      <label for="c7a">キーボードの「Windowsキー」を押しながら「R」を押す<br>
+      <span style="color:#888; font-size:0.9em;">小さい「ファイル名を指定して実行」という画面が出てきます</span></label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7b" onchange="updateProgress()">
+      <label for="c7b">「<b>cmd</b>」と入力してEnterを押す（黒い画面が開きます）</label>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7c" onchange="updateProgress()">
+      <label for="c7c">黒い画面に以下をそのままコピペしてEnterを押す</label>
+    </div>
+    <div class="cmd">
+      <span>pip install streamlit</span>
+      <button class="cmd-copy" onclick="copyCmd(this, 'pip install streamlit')">コピーする</button>
+    </div>
+    <div class="check-item">
+      <input type="checkbox" id="c7d" onchange="updateProgress()">
+      <label for="c7d">しばらく待ってインストールが完了した（「Successfully installed」と表示される）</label>
+    </div>
+    <div class="point-box">
+      <div class="ai">💡</div>
+      <div>インストール中は黒い画面にいろんな文字が流れますが、正常です。<br>
+      止まるまでそのままお待ちください（1〜3分程度）。</div>
+    </div>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="step-card">
+    <div class="step-header">
+      <div class="step-number">8</div>
+      <div>
         <div class="step-title">🏢 富喜屋GitHubグループへの招待を承認する</div>
         <div class="step-subtitle">社内チームのコード共有グループに参加します</div>
       </div>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c7a" onchange="updateProgress()">
-      <label for="c7a">「Fukiya-AI」というGitHubグループへの招待メールが宮崎から届いていることを確認する</label>
+      <input type="checkbox" id="c8a" onchange="updateProgress()">
+      <label for="c8a">「Fukiya-AI」というGitHubグループへの招待メールが宮崎から届いていることを確認する</label>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c7b" onchange="updateProgress()">
-      <label for="c7b">メール内のリンクをクリックして、GitHubにログインした状態で招待を承認する</label>
+      <input type="checkbox" id="c8b" onchange="updateProgress()">
+      <label for="c8b">メール内のリンクをクリックして、GitHubにログインした状態で招待を承認する</label>
     </div>
     <div class="check-item">
-      <input type="checkbox" id="c7c" onchange="updateProgress()">
-      <label for="c7c">GitHub上で「Fukiya-AI」というグループに参加できていることを確認する</label>
+      <input type="checkbox" id="c8c" onchange="updateProgress()">
+      <label for="c8c">GitHub上で「Fukiya-AI」というグループに参加できていることを確認する</label>
     </div>
     <div class="point-box">
       <div class="ai">💡</div>
