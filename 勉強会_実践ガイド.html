@@ -570,6 +570,16 @@
       </div>
     </div>
 
+    <div class="alert-box">
+      <div class="ico">⚠️</div>
+      <div>この設定にはGit本体のインストールが必要です。<b>事前準備ガイドのSTEP4</b>で完了しているはずですが、念のため次のコマンドで確認してください。<br>
+      <span style="color:#888; font-size:0.85em;">「git version 2.xx.x」のように表示されればOK。「認識されません」と出た場合は、先に事前準備ガイドのSTEP4でGitをインストールしてください。</span></div>
+    </div>
+    <div class="cmd">
+      <span>git --version</span>
+      <button class="cmd-copy" onclick="copyCmd(this,'git --version')">コピーする</button>
+    </div>
+
     <div class="check-item">
       <input type="checkbox" id="c3a" onchange="updateProgress()">
       <label for="c3a">ターミナルで以下を入力する（<b>「あなたの名前」を自分の名前に変えて</b>から実行）</label>
@@ -618,8 +628,8 @@
         <label for="c3d">以下を入力する（<b>.envなど秘密ファイルを全リポジトリで自動除外する設定</b>）</label>
       </div>
       <div class="cmd">
-        <span>printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" &gt; ~/.gitignore_global</span>
-        <button class="cmd-copy" data-cmd='printf ".env\n.env.*\nsecrets.toml\n.streamlit/secrets.toml\n" > ~/.gitignore_global' onclick="copyCmd(this, this.dataset.cmd)">コピーする</button>
+        <span>Set-Content -Path "$env:USERPROFILE\.gitignore_global" -Value ".env",".env.*","secrets.toml",".streamlit/secrets.toml"</span>
+        <button class="cmd-copy" data-cmd='Set-Content -Path "$env:USERPROFILE\.gitignore_global" -Value ".env",".env.*","secrets.toml",".streamlit/secrets.toml"' onclick="copyCmd(this, this.dataset.cmd)">コピーする</button>
       </div>
 
       <div class="check-item">
