@@ -233,6 +233,20 @@
   }
   .cmd-copy:hover { background: rgba(255,255,255,0.25); }
 
+  .input-sample {
+    background: #EEF4FF;
+    border: 1px solid #90B4E8;
+    border-left: 4px solid #5B8FD0;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    font-size: 0.93em;
+    color: #2D4A7A;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
   .github-step {
     background: #F8F8FF;
     border: 1px solid #C5C8E8;
@@ -328,19 +342,20 @@
 
     <div class="github-step">
       <div class="num">1</div>
-      <div>スタッフが自分のパソコン（ローカル）でStreamlitアプリを作成する</div>
+      <div>スタッフが、富喜屋のテンプレートリポジトリ（<b>https://github.com/Fukiya-AI/project-template</b>）を開き、緑の「<b>Use this template</b>」から新しいリポジトリを作成する<br>
+      <span style="color:#888; font-size:0.85em;">Owner: Fukiya-AI ／ 公開設定は原則 <b>Public</b>（無料プランのPrivateアプリ枠制限のため）</span></div>
     </div>
     <div class="github-step">
       <div class="num">2</div>
-      <div>宮崎が GitHub組織「Fukiya-AI」に、そのアプリ用の空のリポジトリを作成する</div>
+      <div>スタッフが自分のパソコンで、そのリポジトリを <b>git clone</b> する（デスクトップの「AIの作業場」フォルダ内に自動でコピーされる）</div>
     </div>
     <div class="github-step">
       <div class="num">3</div>
-      <div>スタッフが <code>git init → git add → git commit → git push</code> で、自分のパソコンの中身をGitHubにアップロードする</div>
+      <div>クローンしてできたフォルダをVS Codeで開き、Claude Codeと一緒にStreamlitアプリを作成・編集する</div>
     </div>
     <div class="github-step">
       <div class="num">4</div>
-      <div>宮崎が、そのリポジトリへの書き込み権限（Write）をスタッフのGitHubアカウントに付与する</div>
+      <div>スタッフが <code>git add → git commit → git push</code> で、作ったアプリをGitHubに送る</div>
     </div>
     <div class="github-step">
       <div class="num">5</div>
@@ -356,6 +371,17 @@
     </div>
 
     <div class="point-box" style="margin-top:14px;">
+      <div class="ico">✅</div>
+      <div><b>この方法（テンプレートから自分で作成→クローン）が推奨です。</b><br>
+      自分でリポジトリを作成すると、作成した本人に自動的に書き込み権限（Write）が付くため、宮崎から別途権限を付与してもらう手間がありません。<br>
+      また、テンプレートには<code>.gitignore</code>など秘密情報を守る設定があらかじめ入っています。</div>
+    </div>
+    <div class="alert-box">
+      <div class="ico">⚠️</div>
+      <div>テンプレートを使わず、<b>いきなり自分のパソコンだけでアプリを作り始めてしまった場合</b>は、GitHub側にリポジトリが存在しないため、後から空リポジトリの作成・権限付与など余計な手間が発生します。<br>
+      次に新しいアプリを作るときは、必ず①のテンプレートから始めてください。</div>
+    </div>
+    <div class="point-box">
       <div class="ico">🔁</div>
       <div>この「①〜⑦」は、<b>新しいアプリを初めて公開するときだけ</b>必要な手順です。<br>
       一度公開してしまえば、次からはPHASE 2の手順だけで改良を続けられます。</div>
@@ -406,22 +432,30 @@
       <div class="step-number">2</div>
       <div>
         <div class="step-title">🚀 GitHubに変更を送って公開を更新する</div>
-        <div class="step-subtitle">この3行を実行するだけで、公開中のアプリに反映されます</div>
+        <div class="step-subtitle">Claude Codeにお願いするだけでOKです</div>
       </div>
     </div>
 
     <div class="check-item">
       <input type="checkbox" id="c2a" onchange="updateProgress()">
-      <label for="c2a">ターミナルで以下を入力する</label>
+      <label for="c2a">Claude Codeに、以下のようにお願いする</label>
+    </div>
+    <div class="input-sample">修正したものをGitHubにアップロードして、公開中のアプリに反映して</div>
+
+    <div class="point-box" style="margin-top:12px;">
+      <div class="ico">🤖</div>
+      <div><b>これだけでOKです。</b>Claude Codeが <code>git add</code> ／ <code>git commit</code> ／ <code>git push</code> を代わりに実行してくれます。<br>
+      GitHubへのpushをStreamlit Cloudが自動で検知し、1〜2分ほどで公開中のアプリに反映されます。<br>
+      アプリのURLを開いて、ブラウザを再読み込み（Ctrl+Shift+R）すれば変更が確認できます。</div>
+    </div>
+
+    <div class="check-item" style="margin-top:6px;">
+      <input type="checkbox" id="c2b" onchange="updateProgress()">
+      <label for="c2b">（参考）自分の手でターミナルに入力したい場合は、以下の3行でも同じことができます</label>
     </div>
     <div class="cmd">
       <span>git add .</span>
       <button class="cmd-copy" onclick="copyCmd(this,'git add .')">コピーする</button>
-    </div>
-
-    <div class="check-item">
-      <input type="checkbox" id="c2b" onchange="updateProgress()">
-      <label for="c2b">続けて以下を入力する（<b>" "の中は今回直した内容に変えてOK</b>）</label>
     </div>
     <div class="cmd" style="flex-direction:column; align-items:flex-start; gap:6px;">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
@@ -430,20 +464,9 @@
       </div>
       <span style="color:#888; font-size:0.82em;">例）git commit -m "ラベルの文字サイズを大きくした"</span>
     </div>
-
-    <div class="check-item">
-      <input type="checkbox" id="c2c" onchange="updateProgress()">
-      <label for="c2c">最後に以下を入力する</label>
-    </div>
     <div class="cmd">
       <span>git push</span>
       <button class="cmd-copy" onclick="copyCmd(this,'git push')">コピーする</button>
-    </div>
-
-    <div class="point-box">
-      <div class="ico">🌐</div>
-      <div><b>これだけで完了です。</b>GitHubへのpushをStreamlit Cloudが自動で検知し、1〜2分ほどで公開中のアプリに反映されます。<br>
-      アプリのURLを開いて、ブラウザを再読み込み（Ctrl+Shift+R）すれば変更が確認できます。</div>
     </div>
   </div>
 
